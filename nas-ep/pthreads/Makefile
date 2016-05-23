@@ -1,6 +1,6 @@
 CFLAGS	= -Wall -O2
 CC = gcc
-LIBS = -lpthread
+LIBS = -lpthread -lm
 
 APPS	=	\
 	ep-pthreads
