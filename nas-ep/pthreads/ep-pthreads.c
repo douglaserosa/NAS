@@ -137,7 +137,6 @@ pseudorandom(double *random_seed)
     
     /* Calculate the next seed */
     *random_seed = multiplyModulo46(a, *random_seed);
-    printf("SEED:%f\n",*random_seed);
     
     /* Calculate the return value based on the old seed */
     return POW_2_N46 * oldS;
@@ -224,7 +223,6 @@ void* epThread (void *params) {
     from = args->threadNum * (n / NUM_THREADS);
     until = (args->threadNum  + 1) * (n / NUM_THREADS);
     random_seed = getSeedFor(from * 2 + 1);
-    printf("SEED:%f\n",random_seed);
 
     for (j = from + 1; j <= until; j++)
     {
@@ -340,7 +338,6 @@ main(int argc, char * argv[])
         case 'A':
         default: 
             n = pow(2,28);
-            n = 10;
             printf("Class A\n\n");
             break;
     }
