@@ -1,15 +1,25 @@
 /*
  * Copyright (c)2010 Derrell Lipman
  * Parallel Kernel EP: An embarrassingly parallel benchmark
- * Serial implementation
+ * cilk implementation
+ * gcc ep-cilk.c -fcilkplus -lcilkrts -lm
  */
 #include <sys/time.h>
 #include <stdio.h>
+#include <stdlib.h> 
 #include <math.h>
+#include <cilk/cilk.h>
+#include <cilk/cilk_api.h>
 
-static double	n;
-static double	a;
-static double	random_seed;
+
+#define INITIAL_SEED    271828183
+
+// quantidade de threads. é alterada pelo parametro recebido na chamada do programa
+int NUM_THREADS = 1;
+
+static double   n;
+//static double a = pow(5, 13);
+static double a = 1220703125.0;
 
 static double   POW_2_N23; /* 2^-23 */
 static double   POW_2_23;  /* 2^23 */
@@ -29,6 +39,15 @@ typedef struct Pair
     double          y;
 } Pair;
 
+/**
+ * estrutura para armazenar os parametros a serem utilizados nas threads
+ */
+struct threadStruct {
+    int             threadNum;
+    double          sumX;
+    double          sumY;
+    int             results[10];
+};
 
 /**
  * Find the maximum of two floating-point numbers.
@@ -42,7 +61,7 @@ typedef struct Pair
  * @return
  *   The floor of the maximum of the two parameter values.
  */
-inline int
+int
 maximum(double a, double b)
 {
     /* Return the integer (truncated) value of the maximum of a and b */
@@ -106,28 +125,59 @@ multiplyModulo46(double a, double b)
 
 /**
  * Calculate and return the next pseudo-random number.
- *
- * @side-effects
- *   The global value random_seed is set to the seed for the random number of
- *   the next call to this function.
- *
+ * 
  * @return
  *   The next pseudo-random number, as determined from the pre-existing seed.
  */
 double
-pseudorandom(void)
+pseudorandom(double *random_seed)
 {
     double                      oldS;
     
     
     /* Save the old seed as it's used to calculate the return value */
-    oldS = random_seed;
+    oldS = *random_seed;
     
     /* Calculate the next seed */
-    random_seed = multiplyModulo46(a, random_seed);
+    *random_seed = multiplyModulo46(a, *random_seed);
     
     /* Calculate the return value based on the old seed */
     return POW_2_N46 * oldS;
+}
+
+/**
+ * Get the seed for the kth pseudo-random number
+ *
+ * @param k
+ *   The index of the pseudo-random number for which the seed is desired
+ *
+ * @return
+ *   The seed for the random number at the index specified by the parameter.
+ */
+double
+getSeedFor(double k)
+{
+    int             i;
+    int             j;
+    double          b;
+    double          t;
+    int             m;
+
+    m = floor(log2(k)) + 1;
+    b = INITIAL_SEED;
+    t = a;
+    for (i = 1; i <= m; i++)
+    {
+        j = k / 2;
+        if (2 * j != k)
+        {
+            b = multiplyModulo46(b, t);
+        }
+        t = multiplyModulo46(t, t);
+        k = j;
+    }
+
+    return b;
 }
 
 /**
@@ -137,51 +187,49 @@ pseudorandom(void)
  *   A pair of pseudo-random numbers, each of which is in the range (-1, 1)
  */
 Pair
-randomPair(void)
+randomPair(double *random_seed)
 {
     Pair            pair;
     
-    pair.x = 2 * pseudorandom() - 1;
-    pair.y = 2 * pseudorandom() - 1;
+    pair.x = 2 * pseudorandom(random_seed) - 1;
+    pair.y = 2 * pseudorandom(random_seed) - 1;
     
     return pair;
 }
 
 
 /**
- * Implementation of the main EP loop, generating pairs of pseudorandom
- * numbers, deciding if they're acceptable, tracking counts, and calculating
- * sums. This procedure is itself not free, but makes use of many free
- * sub-procedures.
+ * sorteia n/NUM_THREADS numeros aleatorios 
+ * @param n [description]
  */
-void
-ep(void)
-{
-    int             maxXY;
-    int             results[10] = { 0 };
+struct threadStruct * epThread (struct threadStruct * params) {
+    double   random_seed;
     unsigned long   j;
     Pair            pair;
-    double          sumX = 0.0;
-    double          sumY = 0.0;
     double          t;
     double          temp;
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
-    
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
+    int             maxXY;
+    unsigned long             from;
+    unsigned long             until;
 
-    /* Initialize a and the initial seed */
-    a = pow(5, 13);
-    random_seed = 271828183;
+    /*
+     * Gera o primeiro seed para esta thread. Cada laço sorteia um par de numeros
+     * aleatorios (ou seja, sorteia 2 numeros).
+     * Multiplicados o numero da thread (0,1,2,3,..) pela quantidade de
+     * numeros que serão sorteados pelo benchmark divididos pela 
+     * quantidade de threads criadas.
+     * Esta quantidade deve ser multiplicada por 2 (por causa dos pares de numeros)
+     * e somado 1 para pegarmos o primeiro seed que esta thread irá calcular.
+     */
     
-    /* Calculate the seed for random number 1, ignoring random number 0. */
-    random_seed = multiplyModulo46(a, random_seed);
+    from = params->threadNum * (n / NUM_THREADS);
+    until = (params->threadNum  + 1) * (n / NUM_THREADS);
+    random_seed = getSeedFor(from * 2 + 1);
 
-    for (j = 1; j <= n; j++)
+    for (j = from + 1; j <= until; j++)
     {
         /* Obtain the next pair of random numbers */
-        pair = randomPair();
+        pair = randomPair(&random_seed);
         
         /* Is this pair acceptable? */
         t = (pair.x * pair.x) + (pair.y * pair.y);
@@ -197,8 +245,8 @@ ep(void)
         pair.y *= temp;
         
         /* Keep a running sum of the x and y values */
-        sumX += pair.x;
-        sumY += pair.y;
+        params->sumX += pair.x;
+        params->sumY += pair.y;
         
         /*
          * Find the maximum of the absolute value of each value in the
@@ -209,14 +257,58 @@ ep(void)
         maxXY = maximum(fabs(pair.x), fabs(pair.y));
         
         /* Update the appropriate counter corresponding to this value. */
-        ++results[maxXY];
+        params->results[maxXY]++;
+    }
+
+    return params;
+}
+
+/**
+ * Implementation of the main EP loop, generating pairs of pseudorandom
+ * numbers, deciding if they're acceptable, tracking counts, and calculating
+ * sums. This procedure is itself not free, but makes use of many free
+ * sub-procedures.
+ */
+void
+ep(void)
+{
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
+    double          sumX = 0.0;
+    double          sumY = 0.0;
+    int             results[10] = { 0 };
+    struct threadStruct threadParams[NUM_THREADS];
+    int             i, j;
+    double          temp;
+
+    /* Get the starting time so we can later calculate running time */
+    gettimeofday(&tvStart, NULL);
+
+    for (i = 0; i < NUM_THREADS; i++) {
+        threadParams[i].threadNum = i;
+        threadParams[i].sumX = 0.0;
+        threadParams[i].sumY = 0.0;
+        for (j = 0; j < 10; j++) {
+            threadParams[i].results[j] = 0;
+        }
+        cilk_spawn(epThread(&threadParams[i]));
+    }
+
+    cilk_sync;
+    
+    for (i = 0; i < NUM_THREADS; i++) {
+        sumX += threadParams[i].sumX;
+        sumY += threadParams[i].sumY;
+        for(j = 0; j < 10; j++) {
+            results[j] += threadParams[i].results[j];
+        }
     }
     
     printf("l\tQt\n");
     printf("----------------\n");
     for (j = 0; j < 10; j++)
     {
-        printf("%lu\t%d\n", j, results[j]);
+        printf("%d\t%d\n", j, results[j]);
     }
     
     printf("sum(X) = %.16le\n", sumX);
@@ -235,17 +327,27 @@ ep(void)
 int
 main(int argc, char * argv[])
 {
-    printf("Class A\n\n");
-    n = pow(2,28);
+    // classe do problema
+    char class = argv[1][0];
+    switch (class) {
+        case 'B':
+            n = pow(2,30);
+            printf("Class B\n\n");
+            break;
+        case 'A':
+        default: 
+            n = pow(2,28);
+            printf("Class A\n\n");
+            break;
+    }
+    // numero de threads para o problema
+    __cilkrts_set_param("nworkers",argv[2]);
+    NUM_THREADS = __cilkrts_get_nworkers();
+    printf("Numero de workers: %d\n\n", NUM_THREADS);
+    
     ep();
 
     printf("\n\n---------------------------------\n\n");
-
-/*
-    printf("Class B\n\n");
-    n = pow(2, 30);
-    ep();
-*/
 
     return 0;
 }
