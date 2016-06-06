@@ -4,13 +4,13 @@
  * cilk implementation
  * gcc ep-cilk.c -fcilkplus -lcilkrts -lm
  */
-#include <sys/time.h>
-#include <stdio.h>
-#include <stdlib.h> 
-#include <math.h>
-#include <cilk/cilk.h>
-#include <cilk/cilk_api.h>
 
+#include <sys/time.h>
+#include <cstdio>
+#include <cstdlib> 
+#include <cmath>
+#include <iostream>
+#include <thread>
 
 #define INITIAL_SEED    271828183
 
@@ -202,7 +202,8 @@ randomPair(double *random_seed)
  * sorteia n/NUM_THREADS numeros aleatorios 
  * @param n [description]
  */
-struct threadStruct * epThread (struct threadStruct * params) {
+//struct threadStruct * epThread (struct threadStruct * params) {
+void epThread (struct threadStruct * params) {
     double   random_seed;
     unsigned long   j;
     Pair            pair;
@@ -260,7 +261,7 @@ struct threadStruct * epThread (struct threadStruct * params) {
         params->results[maxXY]++;
     }
 
-    return params;
+    //return params;
 }
 
 /**
@@ -278,8 +279,11 @@ ep(void)
     double          sumY = 0.0;
     int             results[10] = { 0 };
     struct threadStruct threadParams[NUM_THREADS];
+    std::thread     threads[NUM_THREADS];
     int             i, j;
     double          temp;
+
+    int x;
 
     /* Get the starting time so we can later calculate running time */
     gettimeofday(&tvStart, NULL);
@@ -291,12 +295,11 @@ ep(void)
         for (j = 0; j < 10; j++) {
             threadParams[i].results[j] = 0;
         }
-        cilk_spawn(epThread(&threadParams[i]));
+        threads[i] = std::thread(epThread, &threadParams[i]);
     }
-
-    cilk_sync;
     
     for (i = 0; i < NUM_THREADS; i++) {
+        threads[i].join();
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
         for(j = 0; j < 10; j++) {
@@ -328,8 +331,8 @@ int
 main(int argc, char * argv[])
 {
     // classe do problema
-    char class = argv[1][0];
-    switch (class) {
+    char classSize = argv[1][0];
+    switch (classSize) {
         case 'B':
             n = pow(2,30);
             printf("Class B\n\n");
@@ -341,9 +344,8 @@ main(int argc, char * argv[])
             break;
     }
     // numero de threads para o problema
-    __cilkrts_set_param("nworkers",argv[2]);
-    NUM_THREADS = __cilkrts_get_nworkers();
-    printf("Numero de workers: %d\n\n", NUM_THREADS);
+    NUM_THREADS = atoi(argv[2]);
+    printf("Numero de threads: %d\n\n", NUM_THREADS);
     
     ep();
 

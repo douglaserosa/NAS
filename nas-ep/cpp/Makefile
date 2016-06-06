@@ -1,12 +1,12 @@
 CC = g++
 LIBS = -lpthread -lm -std=c++11
 
-APPS = test
+APPS = ep-cpp
 
 all: $(APPS)
 
-test: test.cpp
-	$(CC) test.cpp $(LIBS)
+ep-cpp: ep-cpp.cpp
+	$(CC) ep-cpp.cpp -o ep-cpp $(LIBS)
 
 clean:
 	rm -f *.o $(APPS) 
