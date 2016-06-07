@@ -1,36 +1,31 @@
 /*
- * Copyright (c)2010 Derrell Lipman
+ * Copyright (c) 2010 Derrell Lipman
  * Parallel Kernel EP: An embarrassingly parallel benchmark
- * cilk implementation
- * gcc ep-cilk.c -fcilkplus -lcilkrts -lm
+ * C with MPI implementation
  */
-
 #include <sys/time.h>
-#include <cstdio>
-#include <cstdlib> 
-#include <cmath>
-#include <iostream>
-#include <thread>
+#include <stdio.h>
+#include <math.h>
+#include <mpi.h>
 
 #define INITIAL_SEED    271828183
 
-// quantidade de threads. é alterada pelo parametro recebido na chamada do programa
-int NUM_THREADS = 1;
-
+static int      p = 1;
+static int      my_rank = 0;
 static double   n;
-//static double a = pow(5, 13);
-static double a = 1220703125.0;
+static double   a;
+static double   random_seed;
 
 static double   POW_2_N23; /* 2^-23 */
 static double   POW_2_23;  /* 2^23 */
 static double   POW_2_N46; /* 2^-46 */
 static double   POW_2_46;  /* 2^46 */
 
-
 #ifndef FALSE
 # define        FALSE   (0)
 # define        TRUE    (! FALSE)
 #endif
+
 
 /** Structure to provide pairs of random numbers */
 typedef struct Pair
@@ -39,15 +34,6 @@ typedef struct Pair
     double          y;
 } Pair;
 
-/**
- * estrutura para armazenar os parametros a serem utilizados nas threads
- */
-struct threadStruct {
-    int             threadNum;
-    double          sumX;
-    double          sumY;
-    int             results[10];
-};
 
 /**
  * Find the maximum of two floating-point numbers.
@@ -125,25 +111,32 @@ multiplyModulo46(double a, double b)
 
 /**
  * Calculate and return the next pseudo-random number.
- * 
+ *
+ * @side-effects
+ *   The global value random_seed is set to the seed for the random number of
+ *   the next call to this function.
+ *
  * @return
  *   The next pseudo-random number, as determined from the pre-existing seed.
  */
 double
-pseudorandom(double *random_seed)
+pseudorandom(void)
 {
     double                      oldS;
+    double                      ret;
     
     
     /* Save the old seed as it's used to calculate the return value */
-    oldS = *random_seed;
+    oldS = random_seed;
     
     /* Calculate the next seed */
-    *random_seed = multiplyModulo46(a, *random_seed);
+    random_seed = multiplyModulo46(a, random_seed);
     
-    /* Calculate the return value based on the old seed */
-    return POW_2_N46 * oldS;
+    /* Calculate the return value based on the current seed */
+    ret = POW_2_N46 * oldS;
+    return ret;
 }
+
 
 /**
  * Get the seed for the kth pseudo-random number
@@ -180,6 +173,7 @@ getSeedFor(double k)
     return b;
 }
 
+
 /**
  * Get a pair of random numbers, scaled to the range (-1, 1).
  *
@@ -187,50 +181,53 @@ getSeedFor(double k)
  *   A pair of pseudo-random numbers, each of which is in the range (-1, 1)
  */
 Pair
-randomPair(double *random_seed)
+randomPair(void)
 {
     Pair            pair;
     
-    pair.x = 2 * pseudorandom(random_seed) - 1;
-    pair.y = 2 * pseudorandom(random_seed) - 1;
+    pair.x = 2 * pseudorandom() - 1;
+    pair.y = 2 * pseudorandom() - 1;
     
     return pair;
 }
 
 
 /**
- * sorteia n/NUM_THREADS numeros aleatorios 
- * @param n [description]
+ * Implementation of the main EP loop, generating pairs of pseudorandom
+ * numbers, deciding if they're acceptable, tracking counts, and calculating
+ * sums. This procedure is itself not free, but makes use of many free
+ * sub-procedures.
  */
-//struct threadStruct * epThread (struct threadStruct * params) {
-void epThread (struct threadStruct * params) {
-    double   random_seed;
+void
+ep(void)
+{
+    int             i;
     unsigned long   j;
+    int             maxXY;
+    int             results[10] = { 0 };
+    int             hisResults[10];
     Pair            pair;
+    double          sumX = 0.0;
+    double          sumY = 0.0;
+    double          hisSumX;
+    double          hisSumY;
     double          t;
     double          temp;
-    int             maxXY;
-    unsigned long             from;
-    unsigned long             until;
-
-    /*
-     * Gera o primeiro seed para esta thread. Cada laço sorteia um par de numeros
-     * aleatorios (ou seja, sorteia 2 numeros).
-     * Multiplicados o numero da thread (0,1,2,3,..) pela quantidade de
-     * numeros que serão sorteados pelo benchmark divididos pela 
-     * quantidade de threads criadas.
-     * Esta quantidade deve ser multiplicada por 2 (por causa dos pares de numeros)
-     * e somado 1 para pegarmos o primeiro seed que esta thread irá calcular.
-     */
+    MPI_Status      status;
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
     
-    from = params->threadNum * (n / NUM_THREADS);
-    until = (params->threadNum  + 1) * (n / NUM_THREADS);
-    random_seed = getSeedFor(from * 2 + 1);
-
-    for (j = from + 1; j <= until; j++)
+    /* Get the starting time so we can later calculate running time */
+    if (my_rank == 0)
     {
-        /* Obtain the next pair of random numbers */
-        pair = randomPair(&random_seed);
+        gettimeofday(&tvStart, NULL);
+    }
+
+    /* Each process generates n/p acceptable pairs of numbers */
+    for (j = 1; j <= n / p; j++)
+    {
+        /* Generate a random number pair */
+        pair = randomPair();
         
         /* Is this pair acceptable? */
         t = (pair.x * pair.x) + (pair.y * pair.y);
@@ -246,8 +243,8 @@ void epThread (struct threadStruct * params) {
         pair.y *= temp;
         
         /* Keep a running sum of the x and y values */
-        params->sumX += pair.x;
-        params->sumY += pair.y;
+        sumX += pair.x;
+        sumY += pair.y;
         
         /*
          * Find the maximum of the absolute value of each value in the
@@ -258,102 +255,85 @@ void epThread (struct threadStruct * params) {
         maxXY = maximum(fabs(pair.x), fabs(pair.y));
         
         /* Update the appropriate counter corresponding to this value. */
-        params->results[maxXY]++;
-    }
-
-    //return params;
-}
-
-/**
- * Implementation of the main EP loop, generating pairs of pseudorandom
- * numbers, deciding if they're acceptable, tracking counts, and calculating
- * sums. This procedure is itself not free, but makes use of many free
- * sub-procedures.
- */
-void
-ep(void)
-{
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
-    double          sumX = 0.0;
-    double          sumY = 0.0;
-    int             results[10] = { 0 };
-    struct threadStruct threadParams[NUM_THREADS];
-    std::thread     threads[NUM_THREADS];
-    int             i, j;
-    double          temp;
-
-    int x;
-
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
-
-    for (i = 0; i < NUM_THREADS; i++) {
-        threadParams[i].threadNum = i;
-        threadParams[i].sumX = 0.0;
-        threadParams[i].sumY = 0.0;
-        for (j = 0; j < 10; j++) {
-            threadParams[i].results[j] = 0;
-        }
-        threads[i] = std::thread(epThread, &threadParams[i]);
+        ++results[maxXY];
     }
     
-    for (i = 0; i < NUM_THREADS; i++) {
-        threads[i].join();
-        sumX += threadParams[i].sumX;
-        sumY += threadParams[i].sumY;
-        for(j = 0; j < 10; j++) {
-            results[j] += threadParams[i].results[j];
-        }
-    }
-    
-    printf("l\tQt\n");
-    printf("----------------\n");
-    for (j = 0; j < 10; j++)
+    /* Process 0 receives sums and counts from all other processes. */
+    if (my_rank == 0)
     {
-        printf("%d\t%d\n", j, results[j]);
+        /* From each other process... */
+        for (i = 1; i < p; i++)
+        {
+            /* ... retrieve his results */
+            MPI_Recv(hisResults, 10, MPI_INT, i, 0, MPI_COMM_WORLD, &status);
+
+            /* Accumulate his results with our own */
+            for (j = 0; j < 10; j++)
+            {
+                results[j] += hisResults[j];
+            }
+
+            /* Also get his sumX and sumY, and accumulate them with our own */
+            MPI_Recv(&hisSumX, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &status);
+            sumX += hisSumX;
+            
+            MPI_Recv(&hisSumY, 1, MPI_DOUBLE, i, 0, MPI_COMM_WORLD, &status);
+            sumY += hisSumY;
+        }
+
+        printf("l\tQt\n");
+        printf("----------------\n");
+        for (j = 0; j < 10; j++)
+        {
+            printf("%lu\t%d\n", j, results[j]);
+        }
+        
+        printf("sum(X) = %.16le\n", sumX);
+        printf("sum(Y) = %.16le\n", sumY);
+
+        /* Get the ending time so we can calculate running time */
+        gettimeofday(&tvEnd, NULL);
+
+        /* Calculate and display the running time */
+        temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
+                (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
+        printf("Time: %.4lf seconds.\n", temp);
     }
-    
-    printf("sum(X) = %.15le\n", sumX);
-    printf("sum(Y) = %.15le\n", sumY);
-
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
+    else
+    {
+        /* Send my results to process 0 */
+        MPI_Send(results, 10, MPI_INT, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&sumX, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&sumY, 1, MPI_DOUBLE, 0, 0, MPI_COMM_WORLD);
+    }
 }
 
 
 int
 main(int argc, char * argv[])
 {
-    // classe do problema
-    char classSize = argv[1][0];
-    switch (classSize) {
-        case 'B':
-            n = pow(2,30);
-            printf("Class B\n\n");
-            break;
-        case 'C':
-            n = pow(2,32);
-            printf("Class C\n\n");
-            break;
-        case 'A':
-        default: 
-            n = pow(2,28);
-            printf("Class A\n\n");
-            break;
-    }
-    // numero de threads para o problema
-    NUM_THREADS = atoi(argv[2]);
-    printf("Numero de threads: %d\n\n", NUM_THREADS);
-    
-    ep();
+    /* Start up MPI */
+    MPI_Init(&argc, &argv);
 
-    printf("\n\n---------------------------------\n\n");
+    /* Find out process rank */
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+
+    /* Find out number of processes */
+    MPI_Comm_size(MPI_COMM_WORLD, &p);
+
+    a = pow(5, 13);
+    n = pow(2,28);
+
+    /*
+     * Get the seed for this process. Each iteration takes two random numbers,
+     * so we need to multiply the per-process count by 2. Also add 1 to
+     * account for the first random number being generated after calculating
+     * the first seed from the initial seed value.
+     */
+    random_seed = getSeedFor(my_rank * (n / p) * 2 + 1);
+
+    /* Run the algorithm */
+    ep();
 
     return 0;
 }
