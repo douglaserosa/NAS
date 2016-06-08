@@ -8,8 +8,6 @@
 #include <stdio.h>
 #include <stdlib.h> 
 #include <math.h>
-#include <cilk/cilk.h>
-#include <cilk/cilk_api.h>
 #include "mpi.h"
 
 
@@ -282,7 +280,7 @@ ep(void)
     double          aux_sumY = 0.0;
     int             aux_results[10] = { 0 };
     struct threadStruct threadParams;
-    int             i;
+    int             i, j;
     double          temp;
     int             rank;
     MPI_Status      st;
@@ -290,7 +288,9 @@ ep(void)
     MPI_Comm_rank(MPI_COMM_WORLD,&rank);
 
     /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
+    if(rank == 0) {
+        gettimeofday(&tvStart, NULL);
+    }
 
     threadParams.threadNum = rank;
     threadParams.sumX = 0.0;
@@ -310,47 +310,44 @@ ep(void)
         // eh o processo principal, sincronizar os resultados
         for(i = 1; i < NUM_THREADS; i++) {
             // receber sumX
-            MPI_Recv( &aux_sumX, 1, MPI_LONG, i, MPI_ANY_TAG, MPI_COMM_WORLD, &st );
+            MPI_Recv( &aux_sumX, 1, MPI_LONG, i, 0, MPI_COMM_WORLD, &st );
             // receber sumY
-            MPI_Recv( &aux_sumY, 1, MPI_LONG, i, MPI_ANY_TAG, MPI_COMM_WORLD, &st );
+            MPI_Recv( &aux_sumY, 1, MPI_LONG, i, 0, MPI_COMM_WORLD, &st );
             // receber results
-            MPI_Recv( &aux_results, 10, MPI_int, i, MPI_ANY_TAG, MPI_COMM_WORLD, &st );
+            MPI_Recv( aux_results, 10, MPI_INT, i, 0, MPI_COMM_WORLD, &st );
+
+            sumX += aux_sumX;
+            sumY += aux_sumY;
+            for(j = 0; j < 10; j++) {
+                results[j] += aux_results[j];
+            }
         }
+        printf("l\tQt\n");
+        printf("----------------\n");
+        for (j = 0; j < 10; j++)
+        {
+            printf("%d\t%d\n", j, results[j]);
+        }
+        
+        printf("sum(X) = %.16le\n", sumX);
+        printf("sum(Y) = %.16le\n", sumY);
+
+        /* Get the ending time so we can calculate running time */
+        gettimeofday(&tvEnd, NULL);
+
+        /* Calculate and display the running time */
+        temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
+                (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
+        printf("Time: %.4lf seconds.\n", temp);
     } else {
         // são os outros processos, enviar os dados computados
         // retornar sumX
-        MPI_Send( &sumX, 1, MPI_LONG, 0, MPI_ANY_TAG, MPI_COMM_WORLD );
+        MPI_Send( &sumX, 1, MPI_LONG, 0, 0, MPI_COMM_WORLD );
         // retornar sumY
-        MPI_Send( &sumY, 1, MPI_LONG, 0, MPI_ANY_TAG, MPI_COMM_WORLD );
+        MPI_Send( &sumY, 1, MPI_LONG, 0, 0, MPI_COMM_WORLD );
         // retornar results
-        MPI_Send( results, 10, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD );
+        MPI_Send( results, 10, MPI_INT, 0, 0, MPI_COMM_WORLD );
     }
-    
-    for (i = 0; i < NUM_THREADS; i++) {
-        sumX += threadParams[i].sumX;
-        sumY += threadParams[i].sumY;
-        for(j = 0; j < 10; j++) {
-            results[j] += threadParams[i].results[j];
-        }
-    }
-    
-    printf("l\tQt\n");
-    printf("----------------\n");
-    for (j = 0; j < 10; j++)
-    {
-        printf("%d\t%d\n", j, results[j]);
-    }
-    
-    printf("sum(X) = %.16le\n", sumX);
-    printf("sum(Y) = %.16le\n", sumY);
-
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
 }
 
 

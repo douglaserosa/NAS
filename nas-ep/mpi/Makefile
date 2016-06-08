@@ -1,13 +1,12 @@
-INCL	= -L/usr/src/linux-headers-4.4.0-22/include/linux/mpi.h
-CFLAGS	= -Wall $(INCL) -std=c99 -O2
-LIBS	= -lmpi -lm
-CC		= gcc
+CC = mpicc
+LIBS = -lm
 
-APPS	= ep-mpi
+APPS = ep-mpi
 
-all:	$(APPS)
-ep-mpi:	ep-mpi.c
-	$(CC) ep-mpi.c -o ep-mpi $(LIBS) $(INCL)
+all: $(APPS)
+
+ep-mpi: ep-mpi.c
+	$(CC) ep-mpi.c -o ep-mpi $(LIBS)
 
 clean:
-	rm -f *.o ep-zpl_dbg ep-zpl_real $(APPS) 
+	rm -f *.o $(APPS) 
