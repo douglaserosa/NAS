@@ -235,8 +235,23 @@ ep(void)
 int
 main(int argc, char * argv[])
 {
-    printf("Class A\n\n");
-    n = pow(2,28);
+    char class = argv[1][0];
+    switch (class) {
+        case 'B':
+            n = pow(2,30);
+            printf("EP-Serial: Class B\n\n");
+            break;
+        case 'C':
+            n = pow(2,32);
+            printf("EP-Serial: Class C\n\n");
+            break;
+        case 'A':
+        default:
+            n = pow(2,28);
+            printf("EP-Serial: Class A\n\n");
+            break;
+    }
+
     ep();
 
     printf("\n\n---------------------------------\n\n");

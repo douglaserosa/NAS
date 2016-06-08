@@ -333,12 +333,16 @@ main(int argc, char * argv[])
     switch (class) {
         case 'B':
             n = pow(2,30);
-            printf("Class B\n\n");
+            printf("EP-PThreads: Class B\n\n");
+            break;
+        case 'C':
+            n = pow(2,32);
+            printf("EP-PThreads: Class C\n\n");
             break;
         case 'A':
         default: 
             n = pow(2,28);
-            printf("Class A\n\n");
+            printf("EP-PThreads: Class A\n\n");
             break;
     }
     printf("Numero de threads: %d\n\n", NUM_THREADS);
