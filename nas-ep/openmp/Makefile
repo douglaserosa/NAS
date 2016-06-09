@@ -1,12 +1,12 @@
-CC = gcc
-LIBS = -fopenmp -lm
-
-APPS = ep-openmp
+CFLAGS	= -Wall -O2
+CC		= gcc
+LIBS	= -fopenmp -lm
+APPS	= ep-openmp
 
 all: $(APPS)
 
 ep-openmp: ep-openmp.c
-	$(CC) ep-openmp.c -o ep-openmp $(LIBS)
+	$(CC) $(CFLAGS) ep-openmp.c -o ep-openmp $(LIBS)
 
 clean:
 	rm -f *.o $(APPS) 

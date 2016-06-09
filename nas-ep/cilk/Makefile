@@ -1,7 +1,6 @@
-CC = gcc
-LIBS = -fcilkplus -lcilkrts -lm
-
-APPS = ep-cilk
+CC		= gcc
+LIBS	= -fcilkplus -lcilkrts -lm
+APPS	= ep-cilk
 
 all: $(APPS)
 

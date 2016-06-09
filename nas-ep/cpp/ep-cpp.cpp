@@ -283,8 +283,6 @@ ep(void)
     int             i, j;
     double          temp;
 
-    int x;
-
     /* Get the starting time so we can later calculate running time */
     gettimeofday(&tvStart, NULL);
 
