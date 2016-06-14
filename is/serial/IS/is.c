@@ -356,7 +356,7 @@ double	randlc( double *X, double *A )
 void	create_seq( double seed, double a )
 {
 	double x;
-	INT_TYPE i, k;
+	int    i, k;
 
         k = MAX_KEY/4;
 
