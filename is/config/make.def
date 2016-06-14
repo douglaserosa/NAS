@@ -38,7 +38,7 @@ CLINK	= $(CC)
 #---------------------------------------------------------------------------
 # These macros are passed to the linker 
 #---------------------------------------------------------------------------
-C_LIB  = -lm -lpthread -fcilkplus -lcilkrts
+C_LIB  = -lm -lpthread -fcilkplus -lcilkrts -fopenmp
 
 #---------------------------------------------------------------------------
 # These macros are passed to the compiler 
@@ -60,8 +60,8 @@ C_INC = -I../common
 # _LARGEFILE64_SOURCE - are standard compiler flags which allow to work with 
 # files larger than 2GB.
 #---------------------------------------------------------------------------
-#CFLAGS	= -g -Wall -O3 -mcmodel=medium -lpthread -fcilkplus -lcilkrts
-CFLAGS	= -g -Wall -mcmodel=medium -lpthread -fcilkplus -lcilkrts
+#CFLAGS	= -g -Wall -O3 -mcmodel=medium -lpthread -fcilkplus -lcilkrts -fopenmp -lm
+CFLAGS	= -g -Wall -mcmodel=medium -lpthread -fcilkplus -lcilkrts -fopenmp -lm
 
 #---------------------------------------------------------------------------
 # Global *link time* flags. Flags for increasing maximum executable 

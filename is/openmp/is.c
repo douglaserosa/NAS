@@ -44,8 +44,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-#include <cilk/cilk.h>
-#include <cilk/cilk_api.h>
+#include <omp.h>
 
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
@@ -690,10 +689,9 @@ int main( int argc, char **argv )
     int             i, iteration, timer_on;
     double          timecounter;
     FILE            *fp;
-    NUM_THREADS     = atoi(argv[1]);
 
-    __cilkrts_set_param("nworkers",argv[2]);
-    NUM_THREADS = __cilkrts_get_nworkers();
+    NUM_THREADS = atoi(argv[1]);
+    omp_set_num_threads(NUM_THREADS);
 
 /*  Initialize timers  */
     timer_on = 0;            
@@ -757,10 +755,11 @@ int main( int argc, char **argv )
     T46 = pow(2,  46);
 
 /*  Generate random number sequence and subsequent keys on all procs */
-    for (i = 0; i < NUM_THREADS; i++) {
-        cilk_spawn(create_seq(i));
+    #pragma omp parallel private(i)
+    {
+        i = omp_get_thread_num();
+        create_seq(i);
     }
-    cilk_sync;
 
     if (timer_on) {
       timer_stop( 1 );

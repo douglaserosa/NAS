@@ -43,6 +43,7 @@
 #include "npbparams.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include <pthread.h>
 
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
@@ -289,37 +290,16 @@ double  timer_read( int n );
 /*************                                        ************/
 /*************    portable random number generator    ************/
 /*****************************************************************/
+static double  R23, R46, T23, T46;
 double	randlc( double *X, double *A )
 {
-      static int KS=0;
-      static double	R23, R46, T23, T46;
       double		T1, T2, T3, T4;
       double		A1;
       double		A2;
       double		X1;
       double		X2;
       double		Z;
-      int     		i, j;
-
-      if (KS == 0) 
-      {
-        R23 = 1.0;
-        R46 = 1.0;
-        T23 = 1.0;
-        T46 = 1.0;
-    
-        for (i=1; i<=23; i++)
-        {
-          R23 = 0.50 * R23;
-          T23 = 2.0 * T23;
-        }
-        for (i=1; i<=46; i++)
-        {
-          R46 = 0.50 * R46;
-          T46 = 2.0 * T46;
-        }
-        KS = 1;
-      }
+      int     	j;
 
 /*  Break A into two parts such that A = 2^23 * A1 + A2 and set X = N.  */
 
@@ -772,6 +752,11 @@ int main( int argc, char **argv )
     printf( " Iterations:   %d\n", MAX_ITERATIONS );
 
     if (timer_on) timer_start( 1 );
+
+    R23 = pow(2, -23);
+    T23 = pow(2,  23);
+    R46 = pow(2, -46);
+    T46 = pow(2,  46);
 
 /*  Generate random number sequence and subsequent keys on all procs */
     for (i = 0; i < NUM_THREADS; i++) {
