@@ -1,26 +1,35 @@
 SHELL=/bin/sh
-BENCHMARK=is
-BENCHMARKU=IS
+CLASS=W
+VERSION=
+SFILE=config/suite.def
 
-include ../config/make.def
+default: header
+	@ sys/print_instructions
 
-include ../sys/make.common
+IS: is
+is: header
+	cd IS; $(MAKE) CLASS=$(CLASS)
 
-OBJS = is.o \
-       ${COMMON}/c_print_results.o \
-       ${COMMON}/c_timers.o \
-       ${COMMON}/c_wtime.o
-
-
-${PROGRAM}: config ${OBJS}
-	${CLINK} ${CLINKFLAGS} -o ${PROGRAM} ${OBJS} ${C_LIB}
-
-.c.o:
-	${CCOMPILE} $<
-
-is.o:             is.c  npbparams.h
+# Awk script courtesy cmg@cray.com, modified by Haoqiang Jin
+suite:
+	@ awk -f sys/suite.awk SMAKE=$(MAKE) $(SFILE) | $(SHELL)
 
 
+# It would be nice to make clean in each subdirectory (the targets
+# are defined) but on a really clean system this won't work
+# because those makefiles need config/make.def
 clean:
-	- rm -f *.o *~ mputil* *.x
-	- rm -f npbparams.h core
+	- rm -f core 
+	- rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+	- rm -f sys/setparams sys/makesuite sys/setparams.h
+	- rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+
+veryclean: clean 
+	- rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+	- rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+
+header:
+	@ sys/print_header
+
+
+
