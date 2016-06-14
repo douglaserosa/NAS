@@ -44,6 +44,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <cilk/cilk.h>
+#include <cilk/cilk_api.h>
 
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
@@ -403,11 +405,11 @@ double   find_my_seed( int kn,        /* my processor rank, 0<=kn<=num procs */
 /*************      C  R  E  A  T  E  _  S  E  Q      ************/
 /*****************************************************************/
 
-void*	create_seq( void * threadId )
+void	create_seq( int myId )
 {
+  printf("create_seq id = %d\n", myId);
   double seed = 314159265.00;
   double a    = 1220703125.00;
-  int myId    = *((int*)threadId);
 	double x, mySeed;
 	INT_TYPE i, k, chunk;
   int ini, fim;
@@ -431,7 +433,6 @@ void*	create_seq( void * threadId )
 	    x += randlc(&mySeed, &a);  
       key_array[i] = k*x;
 	}
-  pthread_exit(NULL);
 }
 
 
@@ -712,10 +713,9 @@ int main( int argc, char **argv )
     double          timecounter;
     FILE            *fp;
     NUM_THREADS     = atoi(argv[1]);
-    pthread_t       threads[NUM_THREADS];
-    int             threadParams[NUM_THREADS];
 
-
+    __cilkrts_set_param("nworkers",argv[2]);
+    NUM_THREADS = __cilkrts_get_nworkers();
 
 /*  Initialize timers  */
     timer_on = 0;            
@@ -775,12 +775,9 @@ int main( int argc, char **argv )
 
 /*  Generate random number sequence and subsequent keys on all procs */
     for (i = 0; i < NUM_THREADS; i++) {
-        threadParams[i] = i;
-        pthread_create(&threads[i], NULL, create_seq, (void *) &threadParams[i]);
+        cilk_spawn(create_seq(i));
     }
-    for (i = 0; i < NUM_THREADS; i++) {
-        pthread_join(threads[i], NULL);
-    }
+    cilk_sync;
 
     if (timer_on) {
       timer_stop( 1 );
