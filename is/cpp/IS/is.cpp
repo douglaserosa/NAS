@@ -690,8 +690,6 @@ int main( int argc, char **argv )
     double          timecounter;
     FILE            *fp;
     NUM_THREADS     = atoi(argv[1]);
-    // pthread_t       threads[NUM_THREADS];
-    // int             threadParams[NUM_THREADS];
     std::thread     threads[NUM_THREADS];
 
 

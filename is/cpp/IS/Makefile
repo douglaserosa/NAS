@@ -19,6 +19,7 @@ ${PROGRAM}: config ${OBJS}
 	${CCOMPILE} $<
 
 is.o:             is.cpp  npbparams.h
+	g++    -c -o is.o is.cpp -std=c++11
 
 
 clean:
