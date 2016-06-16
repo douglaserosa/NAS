@@ -692,7 +692,7 @@ int main( int argc, char **argv )
     FILE            *fp;
     NUM_THREADS     = atoi(argv[1]);
 
-    __cilkrts_set_param("nworkers",argv[2]);
+    __cilkrts_set_param("nworkers",argv[1]);
     NUM_THREADS = __cilkrts_get_nworkers();
 
 /*  Initialize timers  */
@@ -747,6 +747,7 @@ int main( int argc, char **argv )
     printf
       ( "\n\n NAS Parallel Benchmarks (NPB3.3-SER) - IS Benchmark\n\n" );
     printf( " Size:  %ld  (class %c)\n", (long)TOTAL_KEYS, CLASS );
+    printf( " Number of available threads:  %d\n", NUM_THREADS );
     printf( " Iterations:   %d\n", MAX_ITERATIONS );
 
     if (timer_on) timer_start( 1 );

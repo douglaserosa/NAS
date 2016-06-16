@@ -431,6 +431,8 @@ main(int argc, char * argv[])
 {
     // numero de threads para o problema
     NUM_THREADS = atoi(argv[2]);
+    __cilkrts_set_param("nworkers",argv[2]);
+    NUM_THREADS = __cilkrts_get_nworkers();
     // classe do problema
     char class = argv[1][0];
     switch (class) {

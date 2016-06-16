@@ -45,6 +45,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <pthread.h>
+#include <cilk/cilk.h>
+#include <cilk/cilk_api.h>
 
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
@@ -414,6 +416,34 @@ void*	create_seq( void * threadId )
   pthread_exit(NULL);
 }
 
+void  create_seq_cilk( int myId )
+{
+  double seed = 314159265.00;
+  double a    = 1220703125.00;
+  double x, mySeed;
+  INT_TYPE i, k, chunk;
+  int ini, fim;
+
+  chunk = (NUM_KEYS + NUM_THREADS - 1) / NUM_THREADS;
+  ini = chunk * myId;
+  fim = ini + chunk;
+  if ( fim > NUM_KEYS ) {
+    fim = NUM_KEYS;
+  }
+
+  mySeed = find_my_seed( myId, NUM_THREADS, (long)4*NUM_KEYS, seed, a );
+
+  k = MAX_KEY/4;
+
+  for (i = ini; i < fim; i++)
+  {
+      x = randlc(&mySeed, &a);
+      x += randlc(&mySeed, &a);
+      x += randlc(&mySeed, &a);
+      x += randlc(&mySeed, &a);  
+      key_array[i] = k*x;
+  }
+}
 
 
 
@@ -691,10 +721,12 @@ int main( int argc, char **argv )
     int             i, iteration, timer_on;
     double          timecounter;
     FILE            *fp;
-    NUM_THREADS     = atoi(argv[1]);
     pthread_t       threads[NUM_THREADS];
     int             threadParams[NUM_THREADS];
 
+    NUM_THREADS     = atoi(argv[1]);
+    __cilkrts_set_param("nworkers",argv[1]);
+    NUM_THREADS = __cilkrts_get_nworkers();
 
 
 /*  Initialize timers  */
@@ -762,11 +794,16 @@ int main( int argc, char **argv )
 /*  Generate random number sequence and subsequent keys on all procs */
     for (i = 0; i < NUM_THREADS; i++) {
         threadParams[i] = i;
-        pthread_create(&threads[i], NULL, create_seq, (void *) &threadParams[i]);
+        if ( i % 2 == 0 ) {
+          pthread_create(&threads[i], NULL, create_seq, (void *) &threadParams[i]);
+        } else {
+          cilk_spawn(create_seq_cilk(i));
+        }
     }
-    for (i = 0; i < NUM_THREADS; i++) {
+    for (i = 0; i < NUM_THREADS; i+=2) {
         pthread_join(threads[i], NULL);
     }
+    cilk_sync;
 
     if (timer_on) {
       timer_stop( 1 );
