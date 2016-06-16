@@ -13,9 +13,13 @@
 #include <thread>
 
 #define INITIAL_SEED    271828183
+#define EPSILON         1.0e-8
 
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
+
+// variavel para guardar o tamanho de N da entrada (2^N)
+int M;
 
 static double   n;
 //static double a = pow(5, 13);
@@ -197,6 +201,26 @@ randomPair(double *random_seed)
     return pair;
 }
 
+int verify (int size, double sx, double sy) {
+    int verified = 0;
+    double sx_verify_value, sy_verify_value, sx_err, sy_err;
+    sx_verify_value = 0.0;
+    sy_verify_value = 0.0;
+    if (size == 28) {
+        sx_verify_value = -4.295875165629892e+3;
+        sy_verify_value = -1.580732573678431e+4;
+    } else if (size == 30) {
+        sx_verify_value =  4.033815542441498e+4;
+        sy_verify_value = -2.660669192809235e+4;
+    } else if (size == 32) {
+        sx_verify_value =  4.764367927995374e+4;
+        sy_verify_value = -8.084072988043731e+4;
+    }
+    sx_err = fabs((sx - sx_verify_value) / sx_verify_value);
+    sy_err = fabs((sy - sy_verify_value) / sy_verify_value);
+    verified = ((sx_err <= EPSILON) && (sy_err <= EPSILON));
+    return verified;
+}
 
 /**
  * sorteia n/NUM_THREADS numeros aleatorios 
@@ -315,6 +339,12 @@ ep(void)
     printf("sum(X) = %.15le\n", sumX);
     printf("sum(Y) = %.15le\n", sumY);
 
+    if ( verify(M, sumX, sumY) ) {
+        printf("Verification = SUCCESSFUL\n");
+    } else {
+        printf("Verification = UNSUCCESSFUL\n");
+    }
+
     /* Get the ending time so we can calculate running time */
     gettimeofday(&tvEnd, NULL);
 
@@ -332,15 +362,18 @@ main(int argc, char * argv[])
     char classSize = argv[1][0];
     switch (classSize) {
         case 'B':
+            M = 30;
             n = pow(2,30);
             printf("EP-CPP: Class B\n\n");
             break;
         case 'C':
+            M = 32;
             n = pow(2,32);
             printf("EP-CPP: Class C\n\n");
             break;
         case 'A':
         default: 
+            M = 28;
             n = pow(2,28);
             printf("EP-CPP: Class A\n\n");
             break;
