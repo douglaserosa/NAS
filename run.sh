@@ -6,9 +6,9 @@ make all
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running ep-cilk" $class $threads "exec" $i  
 			./ep-cilk $class $threads > ep-cilk-$class-$threads--$i
@@ -22,9 +22,9 @@ make all
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running ep-cpp" $class $threads "exec" $i  
 			./ep-cpp $class $threads > ep-cpp-$class-$threads--$i
@@ -38,9 +38,9 @@ make all
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running ep-mpi" $class $threads "exec" $i  
 			#mpirun -c $threads ep-mpi $class > ep-mpi-$class-$threads--$i
@@ -55,9 +55,9 @@ make all
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running ep-openmp" $class $threads "exec" $i  
 			./ep-openmp $class $threads > ep-openmp-$class-$threads--$i
@@ -71,9 +71,9 @@ make all
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running ep-pthreads" $class $threads "exec" $i  
 			./ep-pthreads $class $threads > ep-pthreads-$class-$threads--$i
@@ -87,9 +87,9 @@ make all
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running ep-pthreads-cilk" $class $threads "exec" $i  
 			./ep-pthreads-cilk $class $threads > ep-pthreads-cilk-$class-$threads--$i
@@ -103,7 +103,7 @@ make all
 
 for class in {A,B,C}
 do
-	for i in {1..10}
+	for i in {1..5}
 	do
 		echo "running ep-serial" $class "exec" $i  
 		./ep-serial $class > ep-serial-$class--$i
@@ -117,9 +117,9 @@ cd bin
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running cilk is."$class".x" $threads "exec" $i  
 			./is.$class.x $threads > is-cilk-$class-$threads--$i
@@ -134,9 +134,9 @@ cd bin
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running cpp is."$class".x" $threads "exec" $i  
 			./is.$class.x $threads > is-cpp-$class-$threads--$i
@@ -151,9 +151,9 @@ cd bin
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running mpi is."$class".x" $threads "exec" $i  
 			#mpirun -c $threads ./is.$class.x  > is-mpi-$class-$threads--$i
@@ -169,9 +169,9 @@ cd bin
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running openmp is."$class".x" $threads "exec" $i  
 			./is.$class.x $threads > is-openmp-$class-$threads--$i
@@ -186,9 +186,9 @@ cd bin
 
 for class in {A,B,C}
 do
-	for threads in {2,4,8,16,32,64}
+	for threads in {2,4,8,16,32}
 	do
-		for i in {1..10}
+		for i in {1..5}
 		do
 			echo "running pthreads is."$class".x" $threads "exec" $i  
 			./is.$class.x $threads > is-pthreads-$class-$threads--$i
@@ -203,7 +203,7 @@ cd bin
 
 for class in {A,B,C}
 do
-	for i in {1..10}
+	for i in {1..5}
 	do
 		echo "running serial is."$class".x exec" $i  
 		./is.$class.x > is-serial-$class--$i
@@ -217,7 +217,7 @@ cd bin
 
 for class in {A,B,C}
 do
-	for i in {1..10}
+	for i in {1..5}
 	do
 		echo "running mpi-openmp is."$class".x 2 hosts 16 threads exec" $i
 		#mpirun -c 2 ./is.$class.x 16 > is-mpi-openmp-$class-2hosts-16threads--$i

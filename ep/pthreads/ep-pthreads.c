@@ -158,8 +158,8 @@ pseudorandom(double *random_seed)
 double
 getSeedFor(double k)
 {
-    int             i;
-    int             j;
+    unsigned long   i;
+    unsigned long   j;
     double          b;
     double          t;
     int             m;
