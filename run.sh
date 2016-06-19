@@ -43,7 +43,8 @@ do
 		for i in {1..10}
 		do
 			echo "running ep-mpi" $class $threads "exec" $i  
-			mpirun -c $threads ep-mpi $class > ep-mpi-$class-$threads--$i
+			#mpirun -c $threads ep-mpi $class > ep-mpi-$class-$threads--$i
+			mpirun -n $threads ./ep-mpi $class > ep-mpi-$class-$threads--$i
 		done
 	done
 done
@@ -80,7 +81,7 @@ do
 	done
 done
 
-# ----- EP-PTHREADS
+# ----- EP-PTHREADS-CILK
 cd ../pthreads-cilk/
 make all
 
@@ -155,7 +156,8 @@ do
 		for i in {1..10}
 		do
 			echo "running mpi is."$class".x" $threads "exec" $i  
-			mpirun -c $threads ./is.$class.x  > is-mpi-$class-$threads--$i
+			#mpirun -c $threads ./is.$class.x  > is-mpi-$class-$threads--$i
+			mpirun -n $threads ./is.$class.x  > is-mpi-$class-$threads--$i
 		done
 	done
 done
@@ -194,7 +196,7 @@ do
 	done
 done
 
-# ----- IS-pthreads
+# ----- IS-serial
 cd ../../serial/
 make suite
 cd bin
@@ -218,16 +220,20 @@ do
 	for i in {1..10}
 	do
 		echo "running mpi-openmp is."$class".x 2 hosts 16 threads exec" $i
-		mpirun -c 2 ./is.$class.x 16 > is-mpi-openmp-$class-2hosts-16threads--$i
-		
+		#mpirun -c 2 ./is.$class.x 16 > is-mpi-openmp-$class-2hosts-16threads--$i
+		mpirun -n 2 ./is.$class.x 16 > is-mpi-openmp-$class-2hosts-16threads--$i
+
 		echo "running mpi-openmp is."$class".x 4 hosts 8 threads exec" $i
-		mpirun -c 4 ./is.$class.x 8 > is-mpi-openmp-$class-4hosts-8threads--$i
+		#mpirun -c 4 ./is.$class.x 8 > is-mpi-openmp-$class-4hosts-8threads--$i
+		mpirun -n 4 ./is.$class.x 8 > is-mpi-openmp-$class-4hosts-8threads--$i
 
 		echo "running mpi-openmp is."$class".x 8 hosts 4 threads exec" $i
-		mpirun -c 8 ./is.$class.x 4 > is-mpi-openmp-$class-8hosts-4threads--$i
+		#mpirun -c 8 ./is.$class.x 4 > is-mpi-openmp-$class-8hosts-4threads--$i
+		mpirun -n 8 ./is.$class.x 4 > is-mpi-openmp-$class-8hosts-4threads--$i
 
 		echo "running mpi-openmp is."$class".x 16 hosts 2 threads exec" $i
-		mpirun -c 16 ./is.$class.x 2 > is-mpi-openmp-$class-16hosts-2threads--$i
+		#mpirun -c 16 ./is.$class.x 2 > is-mpi-openmp-$class-16hosts-2threads--$i
+		mpirun -n 16 ./is.$class.x 2 > is-mpi-openmp-$class-16hosts-2threads--$i
 	done
 
 done
