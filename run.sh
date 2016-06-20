@@ -24,6 +24,14 @@ do
 		echo "running mpi-openmp is."$class".x 16 hosts 2 threads exec" $i
 		#mpirun -c 16 ./is.$class.x 2 > is-mpi-openmp-$class-16hosts-2threads--$i
 		mpirun -n 16 ./is.$class.x 2 > is-mpi-openmp-$class-16hosts-2threads--$i
+
+		echo "running mpi-openmp is."$class".x 2 hosts 32 threads exec" $i
+		#mpirun -c 2 ./is.$class.x 32 > is-mpi-openmp-$class-2hosts-32threads--$i
+		mpirun -n 2 ./is.$class.x 32 > is-mpi-openmp-$class-2hosts-32threads--$i
+
+		echo "running mpi-openmp is."$class".x 32 hosts 2 threads exec" $i
+		#mpirun -c 32 ./is.$class.x 2 > is-mpi-openmp-$class-32hosts-2threads--$i
+		mpirun -n 32 ./is.$class.x 2 > is-mpi-openmp-$class-32hosts-2threads--$i
 	done
 
 done
