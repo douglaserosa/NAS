@@ -28,8 +28,11 @@ do
 
 done
 
+cd ../
+make veryclean
+
 # ----- IS-MPI
-cd ../../mpi/
+cd ../mpi/
 make suite
 cd bin
 
@@ -46,8 +49,11 @@ do
 	done
 done
 
+cd ../
+make veryclean
+
 # ----- IS-CILK
-cd ../../cilk
+cd ../cilk
 make suite
 cd bin
 
@@ -63,8 +69,11 @@ do
 	done
 done
 
+cd ../
+make veryclean
+
 # ----- IS-CPP
-cd ../../cpp/
+cd ../cpp/
 make suite
 cd bin
 
@@ -80,8 +89,11 @@ do
 	done
 done
 
+cd ../
+make veryclean
+
 # ----- IS-openmp
-cd ../../openmp/
+cd ../openmp/
 make suite
 cd bin
 
@@ -97,8 +109,11 @@ do
 	done
 done
 
+cd ../
+make veryclean
+
 # ----- IS-pthreads
-cd ../../pthreads/
+cd ../pthreads/
 make suite
 cd bin
 
@@ -114,8 +129,11 @@ do
 	done
 done
 
+cd ../
+make veryclean
+
 # ----- IS-serial
-cd ../../serial/
+cd ../serial/
 make suite
 cd bin
 
@@ -128,8 +146,11 @@ do
 	done
 done
 
+cd ../
+make veryclean
+
 # ----- EP-CILK
-cd ../../../ep/cilk/
+cd ../../ep/cilk/
 make all
 
 for class in {A,B,C}
@@ -143,6 +164,8 @@ do
 		done
 	done
 done
+
+make clean
 
 # ----- EP-CPP
 cd ../cpp/
@@ -159,6 +182,8 @@ do
 		done
 	done
 done
+
+make clean
 
 # ----- EP-MPI
 cd ../mpi/
@@ -177,6 +202,8 @@ do
 	done
 done
 
+make clean
+
 # ----- EP-OPENMP
 cd ../openmp/
 make all
@@ -192,6 +219,8 @@ do
 		done
 	done
 done
+
+make clean
 
 # ----- EP-PTHREADS
 cd ../pthreads/
@@ -209,6 +238,8 @@ do
 	done
 done
 
+make clean
+
 # ----- EP-PTHREADS-CILK
 cd ../pthreads-cilk/
 make all
@@ -225,6 +256,8 @@ do
 	done
 done
 
+make clean
+
 # ----- EP-SERIAL
 cd ../serial/
 make all
@@ -237,5 +270,7 @@ do
 		./ep-serial $class > ep-serial-$class--$i
 	done
 done
+
+make clean
 
 echo "DONE"
