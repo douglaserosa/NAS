@@ -778,14 +778,20 @@ int main( int argc, char **argv )
         if ( fim > NUM_KEYS ) {
           fim = NUM_KEYS;
         }
-        MPI_Recv( aux_key_array, NUM_KEYS, MPI_INT, i, 0, MPI_COMM_WORLD, &st );
+        MPI_Recv( &aux_key_array[ini], (fim - ini), MPI_INT, i, 0, MPI_COMM_WORLD, &st );
         for (j = ini; j < fim; j++) {
           key_array[j] = aux_key_array[j];
         }
       }
     } else {
+      chunk = (NUM_KEYS + NUM_THREADS - 1) / NUM_THREADS;
+      ini = chunk * myrank;
+      fim = ini + chunk;
+      if ( fim > NUM_KEYS ) {
+        fim = NUM_KEYS;
+      }
       // enviar resultados
-      MPI_Send( key_array, NUM_KEYS, MPI_INT, 0, 0, MPI_COMM_WORLD );
+      MPI_Send( &key_array[ini], (fim - ini), MPI_INT, 0, 0, MPI_COMM_WORLD );
     }
 
 
