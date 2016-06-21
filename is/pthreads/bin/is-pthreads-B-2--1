@@ -1,0 +1,53 @@
+
+
+ NAS Parallel Benchmarks (NPB3.3-SER) - IS Benchmark
+
+ Size:  33554432  (class B)
+ Number of available threads:  2
+ Iterations:   10
+
+   iteration
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+        8
+        9
+        10
+
+
+ IS Benchmark Completed
+ Class           =                        B
+ Size            =                 33554432
+ Iterations      =                       10
+ Time in seconds =                     4.41
+ Mop/s total     =                    76.04
+ Operation type  =              keys ranked
+ Verification    =               SUCCESSFUL
+ Version         =                    3.3.1
+ Compile date    =              20 Jun 2016
+
+ Compile options:
+    CC           = gcc
+    CLINK        = $(CC)
+    C_LIB        = -lpthread -lm
+    C_INC        = -I../common
+    CFLAGS       = -g -Wall -O3 -lpthread
+    CLINKFLAGS   = -O3
+
+
+ Please send all errors/feedbacks to:
+
+ NPB Development Team
+ npb@nas.nasa.gov
+
+
+
+Additional timers -
+ Total execution:    7.397
+ Initialization :    2.173 (29.38%)
+ Benchmarking   :    4.413 (59.65%)
+ Sorting        :    0.341 ( 4.61%)

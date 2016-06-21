@@ -1,0 +1,1170 @@
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+gcc  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+../sys/setparams is S
+mpicc  -c -I../common -g -Wall -O3 -fopenmp is.c
+cd ../common; mpicc  -c -I../common -g -Wall -O3 -fopenmp c_print_results.c
+cd ../common; mpicc  -c -I../common -g -Wall -O3 -fopenmp c_timers.c
+cd ../common; mpicc  -c -I../common -g -Wall -O3 -fopenmp -o c_wtime.o ../common/wtime.c
+mpicc -O3 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+../sys/setparams is W
+mpicc  -c -I../common -g -Wall -O3 -fopenmp is.c
+mpicc -O3 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+../sys/setparams is A
+mpicc  -c -I../common -g -Wall -O3 -fopenmp is.c
+mpicc -O3 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+../sys/setparams is B
+mpicc  -c -I../common -g -Wall -O3 -fopenmp is.c
+mpicc -O3 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/sys'
+../sys/setparams is C
+mpicc  -c -I../common -g -Wall -O3 -fopenmp is.c
+mpicc -O3 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi-openmp/IS'
+running mpi-openmp is.A.x 2 hosts 16 threads exec 1
+running mpi-openmp is.A.x 4 hosts 8 threads exec 1
+running mpi-openmp is.A.x 8 hosts 4 threads exec 1
+running mpi-openmp is.A.x 16 hosts 2 threads exec 1
+running mpi-openmp is.A.x 2 hosts 32 threads exec 1
+running mpi-openmp is.A.x 32 hosts 2 threads exec 1
+running mpi-openmp is.A.x 2 hosts 16 threads exec 2
+running mpi-openmp is.A.x 4 hosts 8 threads exec 2
+running mpi-openmp is.A.x 8 hosts 4 threads exec 2
+running mpi-openmp is.A.x 16 hosts 2 threads exec 2
+running mpi-openmp is.A.x 2 hosts 32 threads exec 2
+running mpi-openmp is.A.x 32 hosts 2 threads exec 2
+running mpi-openmp is.A.x 2 hosts 16 threads exec 3
+running mpi-openmp is.A.x 4 hosts 8 threads exec 3
+running mpi-openmp is.A.x 8 hosts 4 threads exec 3
+running mpi-openmp is.A.x 16 hosts 2 threads exec 3
+running mpi-openmp is.A.x 2 hosts 32 threads exec 3
+running mpi-openmp is.A.x 32 hosts 2 threads exec 3
+running mpi-openmp is.A.x 2 hosts 16 threads exec 4
+running mpi-openmp is.A.x 4 hosts 8 threads exec 4
+running mpi-openmp is.A.x 8 hosts 4 threads exec 4
+running mpi-openmp is.A.x 16 hosts 2 threads exec 4
+running mpi-openmp is.A.x 2 hosts 32 threads exec 4
+running mpi-openmp is.A.x 32 hosts 2 threads exec 4
+running mpi-openmp is.A.x 2 hosts 16 threads exec 5
+running mpi-openmp is.A.x 4 hosts 8 threads exec 5
+running mpi-openmp is.A.x 8 hosts 4 threads exec 5
+running mpi-openmp is.A.x 16 hosts 2 threads exec 5
+running mpi-openmp is.A.x 2 hosts 32 threads exec 5
+running mpi-openmp is.A.x 32 hosts 2 threads exec 5
+running mpi-openmp is.B.x 2 hosts 16 threads exec 1
+running mpi-openmp is.B.x 4 hosts 8 threads exec 1
+running mpi-openmp is.B.x 8 hosts 4 threads exec 1
+running mpi-openmp is.B.x 16 hosts 2 threads exec 1
+running mpi-openmp is.B.x 2 hosts 32 threads exec 1
+running mpi-openmp is.B.x 32 hosts 2 threads exec 1
+running mpi-openmp is.B.x 2 hosts 16 threads exec 2
+running mpi-openmp is.B.x 4 hosts 8 threads exec 2
+running mpi-openmp is.B.x 8 hosts 4 threads exec 2
+running mpi-openmp is.B.x 16 hosts 2 threads exec 2
+running mpi-openmp is.B.x 2 hosts 32 threads exec 2
+running mpi-openmp is.B.x 32 hosts 2 threads exec 2
+running mpi-openmp is.B.x 2 hosts 16 threads exec 3
+running mpi-openmp is.B.x 4 hosts 8 threads exec 3
+running mpi-openmp is.B.x 8 hosts 4 threads exec 3
+running mpi-openmp is.B.x 16 hosts 2 threads exec 3
+running mpi-openmp is.B.x 2 hosts 32 threads exec 3
+running mpi-openmp is.B.x 32 hosts 2 threads exec 3
+running mpi-openmp is.B.x 2 hosts 16 threads exec 4
+running mpi-openmp is.B.x 4 hosts 8 threads exec 4
+running mpi-openmp is.B.x 8 hosts 4 threads exec 4
+running mpi-openmp is.B.x 16 hosts 2 threads exec 4
+running mpi-openmp is.B.x 2 hosts 32 threads exec 4
+running mpi-openmp is.B.x 32 hosts 2 threads exec 4
+running mpi-openmp is.B.x 2 hosts 16 threads exec 5
+running mpi-openmp is.B.x 4 hosts 8 threads exec 5
+running mpi-openmp is.B.x 8 hosts 4 threads exec 5
+running mpi-openmp is.B.x 16 hosts 2 threads exec 5
+running mpi-openmp is.B.x 2 hosts 32 threads exec 5
+running mpi-openmp is.B.x 32 hosts 2 threads exec 5
+running mpi-openmp is.C.x 2 hosts 16 threads exec 1
+running mpi-openmp is.C.x 4 hosts 8 threads exec 1
+running mpi-openmp is.C.x 8 hosts 4 threads exec 1
+running mpi-openmp is.C.x 16 hosts 2 threads exec 1
+running mpi-openmp is.C.x 2 hosts 32 threads exec 1
+running mpi-openmp is.C.x 32 hosts 2 threads exec 1
+running mpi-openmp is.C.x 2 hosts 16 threads exec 2
+running mpi-openmp is.C.x 4 hosts 8 threads exec 2
+running mpi-openmp is.C.x 8 hosts 4 threads exec 2
+running mpi-openmp is.C.x 16 hosts 2 threads exec 2
+running mpi-openmp is.C.x 2 hosts 32 threads exec 2
+running mpi-openmp is.C.x 32 hosts 2 threads exec 2
+running mpi-openmp is.C.x 2 hosts 16 threads exec 3
+running mpi-openmp is.C.x 4 hosts 8 threads exec 3
+running mpi-openmp is.C.x 8 hosts 4 threads exec 3
+running mpi-openmp is.C.x 16 hosts 2 threads exec 3
+running mpi-openmp is.C.x 2 hosts 32 threads exec 3
+running mpi-openmp is.C.x 32 hosts 2 threads exec 3
+running mpi-openmp is.C.x 2 hosts 16 threads exec 4
+running mpi-openmp is.C.x 4 hosts 8 threads exec 4
+running mpi-openmp is.C.x 8 hosts 4 threads exec 4
+running mpi-openmp is.C.x 16 hosts 2 threads exec 4
+running mpi-openmp is.C.x 2 hosts 32 threads exec 4
+running mpi-openmp is.C.x 32 hosts 2 threads exec 4
+running mpi-openmp is.C.x 2 hosts 16 threads exec 5
+running mpi-openmp is.C.x 4 hosts 8 threads exec 5
+running mpi-openmp is.C.x 8 hosts 4 threads exec 5
+running mpi-openmp is.C.x 16 hosts 2 threads exec 5
+running mpi-openmp is.C.x 2 hosts 32 threads exec 5
+running mpi-openmp is.C.x 32 hosts 2 threads exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi/sys'
+gcc  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/sys'
+../sys/setparams is S
+mpicc  -c -I../common -g -Wall -O3 is.c
+cd ../common; mpicc  -c -I../common -g -Wall -O3 c_print_results.c
+cd ../common; mpicc  -c -I../common -g -Wall -O3 c_timers.c
+cd ../common; mpicc  -c -I../common -g -Wall -O3 -o c_wtime.o ../common/wtime.c
+mpicc -O3 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/sys'
+../sys/setparams is W
+mpicc  -c -I../common -g -Wall -O3 is.c
+mpicc -O3 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/sys'
+../sys/setparams is A
+mpicc  -c -I../common -g -Wall -O3 is.c
+mpicc -O3 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/sys'
+../sys/setparams is B
+mpicc  -c -I../common -g -Wall -O3 is.c
+mpicc -O3 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/mpi/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/mpi/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/sys'
+../sys/setparams is C
+mpicc  -c -I../common -g -Wall -O3 is.c
+mpicc -O3 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/mpi/IS'
+running mpi is.A.x 2 exec 1
+running mpi is.A.x 2 exec 2
+running mpi is.A.x 2 exec 3
+running mpi is.A.x 2 exec 4
+running mpi is.A.x 2 exec 5
+running mpi is.A.x 4 exec 1
+running mpi is.A.x 4 exec 2
+running mpi is.A.x 4 exec 3
+running mpi is.A.x 4 exec 4
+running mpi is.A.x 4 exec 5
+running mpi is.A.x 8 exec 1
+running mpi is.A.x 8 exec 2
+running mpi is.A.x 8 exec 3
+running mpi is.A.x 8 exec 4
+running mpi is.A.x 8 exec 5
+running mpi is.A.x 16 exec 1
+running mpi is.A.x 16 exec 2
+running mpi is.A.x 16 exec 3
+running mpi is.A.x 16 exec 4
+running mpi is.A.x 16 exec 5
+running mpi is.A.x 32 exec 1
+running mpi is.A.x 32 exec 2
+running mpi is.A.x 32 exec 3
+running mpi is.A.x 32 exec 4
+running mpi is.A.x 32 exec 5
+running mpi is.B.x 2 exec 1
+running mpi is.B.x 2 exec 2
+running mpi is.B.x 2 exec 3
+running mpi is.B.x 2 exec 4
+running mpi is.B.x 2 exec 5
+running mpi is.B.x 4 exec 1
+running mpi is.B.x 4 exec 2
+running mpi is.B.x 4 exec 3
+running mpi is.B.x 4 exec 4
+running mpi is.B.x 4 exec 5
+running mpi is.B.x 8 exec 1
+running mpi is.B.x 8 exec 2
+running mpi is.B.x 8 exec 3
+running mpi is.B.x 8 exec 4
+running mpi is.B.x 8 exec 5
+running mpi is.B.x 16 exec 1
+running mpi is.B.x 16 exec 2
+running mpi is.B.x 16 exec 3
+running mpi is.B.x 16 exec 4
+running mpi is.B.x 16 exec 5
+running mpi is.B.x 32 exec 1
+running mpi is.B.x 32 exec 2
+running mpi is.B.x 32 exec 3
+running mpi is.B.x 32 exec 4
+running mpi is.B.x 32 exec 5
+running mpi is.C.x 2 exec 1
+running mpi is.C.x 2 exec 2
+running mpi is.C.x 2 exec 3
+running mpi is.C.x 2 exec 4
+running mpi is.C.x 2 exec 5
+running mpi is.C.x 4 exec 1
+running mpi is.C.x 4 exec 2
+running mpi is.C.x 4 exec 3
+running mpi is.C.x 4 exec 4
+running mpi is.C.x 4 exec 5
+running mpi is.C.x 8 exec 1
+running mpi is.C.x 8 exec 2
+running mpi is.C.x 8 exec 3
+running mpi is.C.x 8 exec 4
+running mpi is.C.x 8 exec 5
+running mpi is.C.x 16 exec 1
+running mpi is.C.x 16 exec 2
+running mpi is.C.x 16 exec 3
+running mpi is.C.x 16 exec 4
+running mpi is.C.x 16 exec 5
+running mpi is.C.x 32 exec 1
+running mpi is.C.x 32 exec 2
+running mpi is.C.x 32 exec 3
+running mpi is.C.x 32 exec 4
+running mpi is.C.x 32 exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cilk/sys'
+gcc  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/sys'
+../sys/setparams is S
+gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts is.c
+cd ../common; gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts c_print_results.c
+cd ../common; gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts c_timers.c
+cd ../common; gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts -o c_wtime.o ../common/wtime.c
+gcc -O3 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fcilkplus -lcilkrts -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cilk/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/sys'
+../sys/setparams is W
+gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts is.c
+gcc -O3 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fcilkplus -lcilkrts -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cilk/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/sys'
+../sys/setparams is A
+gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts is.c
+gcc -O3 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fcilkplus -lcilkrts -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cilk/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/sys'
+../sys/setparams is B
+gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts is.c
+gcc -O3 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fcilkplus -lcilkrts -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cilk/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cilk/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/sys'
+../sys/setparams is C
+gcc  -c -I../common -g -Wall -fcilkplus -lcilkrts is.c
+gcc -O3 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fcilkplus -lcilkrts -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cilk/IS'
+running cilk is.A.x 2 exec 1
+running cilk is.A.x 2 exec 2
+running cilk is.A.x 2 exec 3
+running cilk is.A.x 2 exec 4
+running cilk is.A.x 2 exec 5
+running cilk is.A.x 4 exec 1
+running cilk is.A.x 4 exec 2
+running cilk is.A.x 4 exec 3
+running cilk is.A.x 4 exec 4
+running cilk is.A.x 4 exec 5
+running cilk is.A.x 8 exec 1
+running cilk is.A.x 8 exec 2
+running cilk is.A.x 8 exec 3
+running cilk is.A.x 8 exec 4
+running cilk is.A.x 8 exec 5
+running cilk is.A.x 16 exec 1
+running cilk is.A.x 16 exec 2
+running cilk is.A.x 16 exec 3
+running cilk is.A.x 16 exec 4
+running cilk is.A.x 16 exec 5
+running cilk is.A.x 32 exec 1
+running cilk is.A.x 32 exec 2
+running cilk is.A.x 32 exec 3
+running cilk is.A.x 32 exec 4
+running cilk is.A.x 32 exec 5
+running cilk is.B.x 2 exec 1
+running cilk is.B.x 2 exec 2
+running cilk is.B.x 2 exec 3
+running cilk is.B.x 2 exec 4
+running cilk is.B.x 2 exec 5
+running cilk is.B.x 4 exec 1
+running cilk is.B.x 4 exec 2
+running cilk is.B.x 4 exec 3
+running cilk is.B.x 4 exec 4
+running cilk is.B.x 4 exec 5
+running cilk is.B.x 8 exec 1
+running cilk is.B.x 8 exec 2
+running cilk is.B.x 8 exec 3
+running cilk is.B.x 8 exec 4
+running cilk is.B.x 8 exec 5
+running cilk is.B.x 16 exec 1
+running cilk is.B.x 16 exec 2
+running cilk is.B.x 16 exec 3
+running cilk is.B.x 16 exec 4
+running cilk is.B.x 16 exec 5
+running cilk is.B.x 32 exec 1
+running cilk is.B.x 32 exec 2
+running cilk is.B.x 32 exec 3
+running cilk is.B.x 32 exec 4
+running cilk is.B.x 32 exec 5
+running cilk is.C.x 2 exec 1
+running cilk is.C.x 2 exec 2
+running cilk is.C.x 2 exec 3
+running cilk is.C.x 2 exec 4
+running cilk is.C.x 2 exec 5
+running cilk is.C.x 4 exec 1
+running cilk is.C.x 4 exec 2
+running cilk is.C.x 4 exec 3
+running cilk is.C.x 4 exec 4
+running cilk is.C.x 4 exec 5
+running cilk is.C.x 8 exec 1
+running cilk is.C.x 8 exec 2
+running cilk is.C.x 8 exec 3
+running cilk is.C.x 8 exec 4
+running cilk is.C.x 8 exec 5
+running cilk is.C.x 16 exec 1
+running cilk is.C.x 16 exec 2
+running cilk is.C.x 16 exec 3
+running cilk is.C.x 16 exec 4
+running cilk is.C.x 16 exec 5
+running cilk is.C.x 32 exec 1
+running cilk is.C.x 32 exec 2
+running cilk is.C.x 32 exec 3
+running cilk is.C.x 32 exec 4
+running cilk is.C.x 32 exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cpp/sys'
+g++  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/sys'
+../sys/setparams is S
+g++    -c -o is.o is.cpp -std=c++11
+cd ../common; g++  -c -I../common -g -Wall -O3 -lpthread -std=c++11 c_print_results.c
+cd ../common; g++  -c -I../common -g -Wall -O3 -lpthread -std=c++11 c_timers.c
+cd ../common; g++  -c -I../common -g -Wall -O3 -lpthread -std=c++11 -o c_wtime.o ../common/wtime.c
+g++ -O3 -lpthread -std=c++11 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm -std=c++11
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cpp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/sys'
+../sys/setparams is W
+g++    -c -o is.o is.cpp -std=c++11
+g++ -O3 -lpthread -std=c++11 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm -std=c++11
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cpp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/sys'
+../sys/setparams is A
+g++    -c -o is.o is.cpp -std=c++11
+g++ -O3 -lpthread -std=c++11 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm -std=c++11
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cpp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/sys'
+../sys/setparams is B
+g++    -c -o is.o is.cpp -std=c++11
+g++ -O3 -lpthread -std=c++11 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm -std=c++11
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/cpp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/cpp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/sys'
+../sys/setparams is C
+g++    -c -o is.o is.cpp -std=c++11
+g++ -O3 -lpthread -std=c++11 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm -std=c++11
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/cpp/IS'
+running cpp is.A.x 2 exec 1
+running cpp is.A.x 2 exec 2
+running cpp is.A.x 2 exec 3
+running cpp is.A.x 2 exec 4
+running cpp is.A.x 2 exec 5
+running cpp is.A.x 4 exec 1
+running cpp is.A.x 4 exec 2
+running cpp is.A.x 4 exec 3
+running cpp is.A.x 4 exec 4
+running cpp is.A.x 4 exec 5
+running cpp is.A.x 8 exec 1
+running cpp is.A.x 8 exec 2
+running cpp is.A.x 8 exec 3
+running cpp is.A.x 8 exec 4
+running cpp is.A.x 8 exec 5
+running cpp is.A.x 16 exec 1
+running cpp is.A.x 16 exec 2
+running cpp is.A.x 16 exec 3
+running cpp is.A.x 16 exec 4
+running cpp is.A.x 16 exec 5
+running cpp is.A.x 32 exec 1
+running cpp is.A.x 32 exec 2
+running cpp is.A.x 32 exec 3
+running cpp is.A.x 32 exec 4
+running cpp is.A.x 32 exec 5
+running cpp is.B.x 2 exec 1
+running cpp is.B.x 2 exec 2
+running cpp is.B.x 2 exec 3
+running cpp is.B.x 2 exec 4
+running cpp is.B.x 2 exec 5
+running cpp is.B.x 4 exec 1
+running cpp is.B.x 4 exec 2
+running cpp is.B.x 4 exec 3
+running cpp is.B.x 4 exec 4
+running cpp is.B.x 4 exec 5
+running cpp is.B.x 8 exec 1
+running cpp is.B.x 8 exec 2
+running cpp is.B.x 8 exec 3
+running cpp is.B.x 8 exec 4
+running cpp is.B.x 8 exec 5
+running cpp is.B.x 16 exec 1
+running cpp is.B.x 16 exec 2
+running cpp is.B.x 16 exec 3
+running cpp is.B.x 16 exec 4
+running cpp is.B.x 16 exec 5
+running cpp is.B.x 32 exec 1
+running cpp is.B.x 32 exec 2
+running cpp is.B.x 32 exec 3
+running cpp is.B.x 32 exec 4
+running cpp is.B.x 32 exec 5
+running cpp is.C.x 2 exec 1
+running cpp is.C.x 2 exec 2
+running cpp is.C.x 2 exec 3
+running cpp is.C.x 2 exec 4
+running cpp is.C.x 2 exec 5
+running cpp is.C.x 4 exec 1
+running cpp is.C.x 4 exec 2
+running cpp is.C.x 4 exec 3
+running cpp is.C.x 4 exec 4
+running cpp is.C.x 4 exec 5
+running cpp is.C.x 8 exec 1
+running cpp is.C.x 8 exec 2
+running cpp is.C.x 8 exec 3
+running cpp is.C.x 8 exec 4
+running cpp is.C.x 8 exec 5
+running cpp is.C.x 16 exec 1
+running cpp is.C.x 16 exec 2
+running cpp is.C.x 16 exec 3
+running cpp is.C.x 16 exec 4
+running cpp is.C.x 16 exec 5
+running cpp is.C.x 32 exec 1
+running cpp is.C.x 32 exec 2
+running cpp is.C.x 32 exec 3
+running cpp is.C.x 32 exec 4
+running cpp is.C.x 32 exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/openmp/sys'
+gcc  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/sys'
+../sys/setparams is S
+gcc  -c -I../common -g -Wall -O3 -fopenmp is.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -fopenmp c_print_results.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -fopenmp c_timers.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -fopenmp -o c_wtime.o ../common/wtime.c
+gcc -O3 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/sys'
+../sys/setparams is W
+gcc  -c -I../common -g -Wall -O3 -fopenmp is.c
+gcc -O3 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/sys'
+../sys/setparams is A
+gcc  -c -I../common -g -Wall -O3 -fopenmp is.c
+gcc -O3 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/sys'
+../sys/setparams is B
+gcc  -c -I../common -g -Wall -O3 -fopenmp is.c
+gcc -O3 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/openmp/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/openmp/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/sys'
+../sys/setparams is C
+gcc  -c -I../common -g -Wall -O3 -fopenmp is.c
+gcc -O3 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -fopenmp -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/openmp/IS'
+running openmp is.A.x 2 exec 1
+running openmp is.A.x 2 exec 2
+running openmp is.A.x 2 exec 3
+running openmp is.A.x 2 exec 4
+running openmp is.A.x 2 exec 5
+running openmp is.A.x 4 exec 1
+running openmp is.A.x 4 exec 2
+running openmp is.A.x 4 exec 3
+running openmp is.A.x 4 exec 4
+running openmp is.A.x 4 exec 5
+running openmp is.A.x 8 exec 1
+running openmp is.A.x 8 exec 2
+running openmp is.A.x 8 exec 3
+running openmp is.A.x 8 exec 4
+running openmp is.A.x 8 exec 5
+running openmp is.A.x 16 exec 1
+running openmp is.A.x 16 exec 2
+running openmp is.A.x 16 exec 3
+running openmp is.A.x 16 exec 4
+running openmp is.A.x 16 exec 5
+running openmp is.A.x 32 exec 1
+running openmp is.A.x 32 exec 2
+running openmp is.A.x 32 exec 3
+running openmp is.A.x 32 exec 4
+running openmp is.A.x 32 exec 5
+running openmp is.B.x 2 exec 1
+running openmp is.B.x 2 exec 2
+running openmp is.B.x 2 exec 3
+running openmp is.B.x 2 exec 4
+running openmp is.B.x 2 exec 5
+running openmp is.B.x 4 exec 1
+running openmp is.B.x 4 exec 2
+running openmp is.B.x 4 exec 3
+running openmp is.B.x 4 exec 4
+running openmp is.B.x 4 exec 5
+running openmp is.B.x 8 exec 1
+running openmp is.B.x 8 exec 2
+running openmp is.B.x 8 exec 3
+running openmp is.B.x 8 exec 4
+running openmp is.B.x 8 exec 5
+running openmp is.B.x 16 exec 1
+running openmp is.B.x 16 exec 2
+running openmp is.B.x 16 exec 3
+running openmp is.B.x 16 exec 4
+running openmp is.B.x 16 exec 5
+running openmp is.B.x 32 exec 1
+running openmp is.B.x 32 exec 2
+running openmp is.B.x 32 exec 3
+running openmp is.B.x 32 exec 4
+running openmp is.B.x 32 exec 5
+running openmp is.C.x 2 exec 1
+running openmp is.C.x 2 exec 2
+running openmp is.C.x 2 exec 3
+running openmp is.C.x 2 exec 4
+running openmp is.C.x 2 exec 5
+running openmp is.C.x 4 exec 1
+running openmp is.C.x 4 exec 2
+running openmp is.C.x 4 exec 3
+running openmp is.C.x 4 exec 4
+running openmp is.C.x 4 exec 5
+running openmp is.C.x 8 exec 1
+running openmp is.C.x 8 exec 2
+running openmp is.C.x 8 exec 3
+running openmp is.C.x 8 exec 4
+running openmp is.C.x 8 exec 5
+running openmp is.C.x 16 exec 1
+running openmp is.C.x 16 exec 2
+running openmp is.C.x 16 exec 3
+running openmp is.C.x 16 exec 4
+running openmp is.C.x 16 exec 5
+running openmp is.C.x 32 exec 1
+running openmp is.C.x 32 exec 2
+running openmp is.C.x 32 exec 3
+running openmp is.C.x 32 exec 4
+running openmp is.C.x 32 exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+gcc  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+../sys/setparams is S
+gcc  -c -I../common -g -Wall -O3 -lpthread is.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -lpthread c_print_results.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -lpthread c_timers.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -lpthread -o c_wtime.o ../common/wtime.c
+gcc -O3 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+../sys/setparams is W
+gcc  -c -I../common -g -Wall -O3 -lpthread is.c
+gcc -O3 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+../sys/setparams is A
+gcc  -c -I../common -g -Wall -O3 -lpthread is.c
+gcc -O3 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+../sys/setparams is B
+gcc  -c -I../common -g -Wall -O3 -lpthread is.c
+gcc -O3 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/sys'
+../sys/setparams is C
+gcc  -c -I../common -g -Wall -O3 -lpthread is.c
+gcc -O3 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lpthread -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/pthreads/IS'
+running pthreads is.A.x 2 exec 1
+running pthreads is.A.x 2 exec 2
+running pthreads is.A.x 2 exec 3
+running pthreads is.A.x 2 exec 4
+running pthreads is.A.x 2 exec 5
+running pthreads is.A.x 4 exec 1
+running pthreads is.A.x 4 exec 2
+running pthreads is.A.x 4 exec 3
+running pthreads is.A.x 4 exec 4
+running pthreads is.A.x 4 exec 5
+running pthreads is.A.x 8 exec 1
+running pthreads is.A.x 8 exec 2
+running pthreads is.A.x 8 exec 3
+running pthreads is.A.x 8 exec 4
+running pthreads is.A.x 8 exec 5
+running pthreads is.A.x 16 exec 1
+running pthreads is.A.x 16 exec 2
+running pthreads is.A.x 16 exec 3
+running pthreads is.A.x 16 exec 4
+running pthreads is.A.x 16 exec 5
+running pthreads is.A.x 32 exec 1
+running pthreads is.A.x 32 exec 2
+running pthreads is.A.x 32 exec 3
+running pthreads is.A.x 32 exec 4
+running pthreads is.A.x 32 exec 5
+running pthreads is.B.x 2 exec 1
+running pthreads is.B.x 2 exec 2
+running pthreads is.B.x 2 exec 3
+running pthreads is.B.x 2 exec 4
+running pthreads is.B.x 2 exec 5
+running pthreads is.B.x 4 exec 1
+running pthreads is.B.x 4 exec 2
+running pthreads is.B.x 4 exec 3
+running pthreads is.B.x 4 exec 4
+running pthreads is.B.x 4 exec 5
+running pthreads is.B.x 8 exec 1
+running pthreads is.B.x 8 exec 2
+running pthreads is.B.x 8 exec 3
+running pthreads is.B.x 8 exec 4
+running pthreads is.B.x 8 exec 5
+running pthreads is.B.x 16 exec 1
+running pthreads is.B.x 16 exec 2
+running pthreads is.B.x 16 exec 3
+running pthreads is.B.x 16 exec 4
+running pthreads is.B.x 16 exec 5
+running pthreads is.B.x 32 exec 1
+running pthreads is.B.x 32 exec 2
+running pthreads is.B.x 32 exec 3
+running pthreads is.B.x 32 exec 4
+running pthreads is.B.x 32 exec 5
+running pthreads is.C.x 2 exec 1
+running pthreads is.C.x 2 exec 2
+running pthreads is.C.x 2 exec 3
+running pthreads is.C.x 2 exec 4
+running pthreads is.C.x 2 exec 5
+running pthreads is.C.x 4 exec 1
+running pthreads is.C.x 4 exec 2
+running pthreads is.C.x 4 exec 3
+running pthreads is.C.x 4 exec 4
+running pthreads is.C.x 4 exec 5
+running pthreads is.C.x 8 exec 1
+running pthreads is.C.x 8 exec 2
+running pthreads is.C.x 8 exec 3
+running pthreads is.C.x 8 exec 4
+running pthreads is.C.x 8 exec 5
+running pthreads is.C.x 16 exec 1
+running pthreads is.C.x 16 exec 2
+running pthreads is.C.x 16 exec 3
+running pthreads is.C.x 16 exec 4
+running pthreads is.C.x 16 exec 5
+running pthreads is.C.x 32 exec 1
+running pthreads is.C.x 32 exec 2
+running pthreads is.C.x 32 exec 3
+running pthreads is.C.x 32 exec 4
+running pthreads is.C.x 32 exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/serial/sys'
+gcc  -o setparams setparams.c
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/serial/sys'
+../sys/setparams is S
+gcc  -c -I../common -g -Wall -O3 is.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 c_print_results.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 c_timers.c
+cd ../common; gcc  -c -I../common -g -Wall -O3 -o c_wtime.o ../common/wtime.c
+gcc -O3 -o ../bin/is.S.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/serial/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/serial/sys'
+../sys/setparams is W
+gcc  -c -I../common -g -Wall -O3 is.c
+gcc -O3 -o ../bin/is.W.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/serial/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/serial/sys'
+../sys/setparams is A
+gcc  -c -I../common -g -Wall -O3 is.c
+gcc -O3 -o ../bin/is.A.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/serial/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/serial/sys'
+../sys/setparams is B
+gcc  -c -I../common -g -Wall -O3 is.c
+gcc -O3 -o ../bin/is.B.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+rm -f *.o *~ mputil*
+rm -f npbparams.h core
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[1]: Entering directory '/home/grupo8/projects/NAS/is/serial/IS'
+make[2]: Entering directory '/home/grupo8/projects/NAS/is/serial/sys'
+make[2]: Nothing to be done for 'all'.
+make[2]: Leaving directory '/home/grupo8/projects/NAS/is/serial/sys'
+../sys/setparams is C
+gcc  -c -I../common -g -Wall -O3 is.c
+gcc -O3 -o ../bin/is.C.x is.o ../common/c_print_results.o ../common/c_timers.o ../common/c_wtime.o -lm
+make[1]: Leaving directory '/home/grupo8/projects/NAS/is/serial/IS'
+running serial is.A.x exec 1
+running serial is.A.x exec 2
+running serial is.A.x exec 3
+running serial is.A.x exec 4
+running serial is.A.x exec 5
+running serial is.B.x exec 1
+running serial is.B.x exec 2
+running serial is.B.x exec 3
+running serial is.B.x exec 4
+running serial is.B.x exec 5
+running serial is.C.x exec 1
+running serial is.C.x exec 2
+running serial is.C.x exec 3
+running serial is.C.x exec 4
+running serial is.C.x exec 5
+rm -f core 
+rm -f *~ */core */*~ */*.o */npbparams.h */*.obj */*.exe
+rm -f sys/setparams sys/makesuite sys/setparams.h
+rm -f {DC/,}ADC.{logf,view,dat,viewsz,groupby,chunks}.* 
+rm -f bin/sp.* bin/lu.* bin/mg.* bin/ft.* bin/bt.* bin/is.*
+rm -f bin/ep.* bin/cg.* bin/ua.* bin/dc.*
+gcc ep-cilk.c -o ep-cilk -fcilkplus -lcilkrts -lm
+running ep-cilk A 2 exec 1
+running ep-cilk A 2 exec 2
+running ep-cilk A 2 exec 3
+running ep-cilk A 2 exec 4
+running ep-cilk A 2 exec 5
+running ep-cilk A 4 exec 1
+running ep-cilk A 4 exec 2
+running ep-cilk A 4 exec 3
+running ep-cilk A 4 exec 4
+running ep-cilk A 4 exec 5
+running ep-cilk A 8 exec 1
+running ep-cilk A 8 exec 2
+running ep-cilk A 8 exec 3
+running ep-cilk A 8 exec 4
+running ep-cilk A 8 exec 5
+running ep-cilk A 16 exec 1
+running ep-cilk A 16 exec 2
+running ep-cilk A 16 exec 3
+running ep-cilk A 16 exec 4
+running ep-cilk A 16 exec 5
+running ep-cilk A 32 exec 1
+running ep-cilk A 32 exec 2
+running ep-cilk A 32 exec 3
+running ep-cilk A 32 exec 4
+running ep-cilk A 32 exec 5
+running ep-cilk B 2 exec 1
+running ep-cilk B 2 exec 2
+running ep-cilk B 2 exec 3
+running ep-cilk B 2 exec 4
+running ep-cilk B 2 exec 5
+running ep-cilk B 4 exec 1
+running ep-cilk B 4 exec 2
+running ep-cilk B 4 exec 3
+running ep-cilk B 4 exec 4
+running ep-cilk B 4 exec 5
+running ep-cilk B 8 exec 1
+running ep-cilk B 8 exec 2
+running ep-cilk B 8 exec 3
+running ep-cilk B 8 exec 4
+running ep-cilk B 8 exec 5
+running ep-cilk B 16 exec 1
+running ep-cilk B 16 exec 2
+running ep-cilk B 16 exec 3
+running ep-cilk B 16 exec 4
+running ep-cilk B 16 exec 5
+running ep-cilk B 32 exec 1
+running ep-cilk B 32 exec 2
+running ep-cilk B 32 exec 3
+running ep-cilk B 32 exec 4
+running ep-cilk B 32 exec 5
+running ep-cilk C 2 exec 1
+running ep-cilk C 2 exec 2
+running ep-cilk C 2 exec 3
+running ep-cilk C 2 exec 4
+running ep-cilk C 2 exec 5
+running ep-cilk C 4 exec 1
+running ep-cilk C 4 exec 2
+running ep-cilk C 4 exec 3
+running ep-cilk C 4 exec 4
+running ep-cilk C 4 exec 5
+running ep-cilk C 8 exec 1
+running ep-cilk C 8 exec 2
+running ep-cilk C 8 exec 3
+running ep-cilk C 8 exec 4
+running ep-cilk C 8 exec 5
+running ep-cilk C 16 exec 1
+running ep-cilk C 16 exec 2
+running ep-cilk C 16 exec 3
+running ep-cilk C 16 exec 4
+running ep-cilk C 16 exec 5
+running ep-cilk C 32 exec 1
+running ep-cilk C 32 exec 2
+running ep-cilk C 32 exec 3
+running ep-cilk C 32 exec 4
+running ep-cilk C 32 exec 5
+rm -f *.o ep-cilk 
+g++ -Wall -O2 ep-cpp.cpp -o ep-cpp -lpthread -lm -std=c++11
+running ep-cpp A 2 exec 1
+running ep-cpp A 2 exec 2
+running ep-cpp A 2 exec 3
+running ep-cpp A 2 exec 4
+running ep-cpp A 2 exec 5
+running ep-cpp A 4 exec 1
+running ep-cpp A 4 exec 2
+running ep-cpp A 4 exec 3
+running ep-cpp A 4 exec 4
+running ep-cpp A 4 exec 5
+running ep-cpp A 8 exec 1
+running ep-cpp A 8 exec 2
+running ep-cpp A 8 exec 3
+running ep-cpp A 8 exec 4
+running ep-cpp A 8 exec 5
+running ep-cpp A 16 exec 1
+running ep-cpp A 16 exec 2
+running ep-cpp A 16 exec 3
+running ep-cpp A 16 exec 4
+running ep-cpp A 16 exec 5
+running ep-cpp A 32 exec 1
+running ep-cpp A 32 exec 2
+running ep-cpp A 32 exec 3
+running ep-cpp A 32 exec 4
+running ep-cpp A 32 exec 5
+running ep-cpp B 2 exec 1
+running ep-cpp B 2 exec 2
+running ep-cpp B 2 exec 3
+running ep-cpp B 2 exec 4
+running ep-cpp B 2 exec 5
+running ep-cpp B 4 exec 1
+running ep-cpp B 4 exec 2
+running ep-cpp B 4 exec 3
+running ep-cpp B 4 exec 4
+running ep-cpp B 4 exec 5
+running ep-cpp B 8 exec 1
+running ep-cpp B 8 exec 2
+running ep-cpp B 8 exec 3
+running ep-cpp B 8 exec 4
+running ep-cpp B 8 exec 5
+running ep-cpp B 16 exec 1
+running ep-cpp B 16 exec 2
+running ep-cpp B 16 exec 3
+running ep-cpp B 16 exec 4
+running ep-cpp B 16 exec 5
+running ep-cpp B 32 exec 1
+running ep-cpp B 32 exec 2
+running ep-cpp B 32 exec 3
+running ep-cpp B 32 exec 4
+running ep-cpp B 32 exec 5
+running ep-cpp C 2 exec 1
+running ep-cpp C 2 exec 2
+running ep-cpp C 2 exec 3
+running ep-cpp C 2 exec 4
+running ep-cpp C 2 exec 5
+running ep-cpp C 4 exec 1
+running ep-cpp C 4 exec 2
+running ep-cpp C 4 exec 3
+running ep-cpp C 4 exec 4
+running ep-cpp C 4 exec 5
+running ep-cpp C 8 exec 1
+running ep-cpp C 8 exec 2
+running ep-cpp C 8 exec 3
+running ep-cpp C 8 exec 4
+running ep-cpp C 8 exec 5
+running ep-cpp C 16 exec 1
+running ep-cpp C 16 exec 2
+running ep-cpp C 16 exec 3
+running ep-cpp C 16 exec 4
+running ep-cpp C 16 exec 5
+running ep-cpp C 32 exec 1
+running ep-cpp C 32 exec 2
+running ep-cpp C 32 exec 3
+running ep-cpp C 32 exec 4
+running ep-cpp C 32 exec 5
+rm -f *.o ep-cpp 
+mpicc -Wall -O2 ep-mpi.c -o ep-mpi -lm
+running ep-mpi A 2 exec 1
+running ep-mpi A 2 exec 2
+running ep-mpi A 2 exec 3
+running ep-mpi A 2 exec 4
+running ep-mpi A 2 exec 5
+running ep-mpi A 4 exec 1
+running ep-mpi A 4 exec 2
+running ep-mpi A 4 exec 3
+running ep-mpi A 4 exec 4
+running ep-mpi A 4 exec 5
+running ep-mpi A 8 exec 1
+running ep-mpi A 8 exec 2
+running ep-mpi A 8 exec 3
+running ep-mpi A 8 exec 4
+running ep-mpi A 8 exec 5
+running ep-mpi A 16 exec 1
+running ep-mpi A 16 exec 2
+running ep-mpi A 16 exec 3
+running ep-mpi A 16 exec 4
+running ep-mpi A 16 exec 5
+running ep-mpi A 32 exec 1
+running ep-mpi A 32 exec 2
+running ep-mpi A 32 exec 3
+running ep-mpi A 32 exec 4
+running ep-mpi A 32 exec 5
+running ep-mpi B 2 exec 1
+running ep-mpi B 2 exec 2
+running ep-mpi B 2 exec 3
+running ep-mpi B 2 exec 4
+running ep-mpi B 2 exec 5
+running ep-mpi B 4 exec 1
+running ep-mpi B 4 exec 2
+running ep-mpi B 4 exec 3
+running ep-mpi B 4 exec 4
+running ep-mpi B 4 exec 5
+running ep-mpi B 8 exec 1
+running ep-mpi B 8 exec 2
+running ep-mpi B 8 exec 3
+running ep-mpi B 8 exec 4
+running ep-mpi B 8 exec 5
+running ep-mpi B 16 exec 1
+running ep-mpi B 16 exec 2
+running ep-mpi B 16 exec 3
+running ep-mpi B 16 exec 4
+running ep-mpi B 16 exec 5
+running ep-mpi B 32 exec 1
+running ep-mpi B 32 exec 2
+running ep-mpi B 32 exec 3
+running ep-mpi B 32 exec 4
+running ep-mpi B 32 exec 5
+running ep-mpi C 2 exec 1
+running ep-mpi C 2 exec 2
