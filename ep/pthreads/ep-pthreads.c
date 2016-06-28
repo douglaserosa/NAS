@@ -204,7 +204,13 @@ int verify (int size, double sx, double sy) {
     double sx_verify_value, sy_verify_value, sx_err, sy_err;
     sx_verify_value = 0.0;
     sy_verify_value = 0.0;
-    if (size == 28) {
+    if (size == 24) {
+        sx_verify_value = -3.247834652034740e+3;
+        sy_verify_value = -6.958407078382297e+3;
+    } else if (size == 25) {
+        sx_verify_value = -2.863319731645753e+3;
+        sy_verify_value = -6.320053679109499e+3;
+    } else if (size == 28) {
         sx_verify_value = -4.295875165629892e+3;
         sy_verify_value = -1.580732573678431e+4;
     } else if (size == 30) {
@@ -363,21 +369,31 @@ main(int argc, char * argv[])
     // classe do problema
     char class = argv[1][0];
     switch (class) {
+        case 'W':
+            M = 25;
+            n = pow(2,M);
+            printf("EP-PThreads: Class W\n\n");
+            break;
+        case 'A':
+            M = 28;
+            n = pow(2,M);
+            printf("EP-PThreads: Class A\n\n");
+            break;
         case 'B':
             M = 30;
-            n = pow(2,30);
+            n = pow(2,M);
             printf("EP-PThreads: Class B\n\n");
             break;
         case 'C':
             M = 32;
-            n = pow(2,32);
+            n = pow(2,M);
             printf("EP-PThreads: Class C\n\n");
             break;
-        case 'A':
+        case 'S':
         default:
-            M = 28;
-            n = pow(2,28);
-            printf("EP-PThreads: Class A\n\n");
+            M = 24;
+            n = pow(2,M);
+            printf("EP-PThreads: Class S\n\n");
             break;
     }
     printf("Numero de threads: %d\n\n", NUM_THREADS);
