@@ -219,6 +219,12 @@ int verify (int size, double sx, double sy) {
     } else if (size == 32) {
         sx_verify_value =  4.764367927995374e+4;
         sy_verify_value = -8.084072988043731e+4;
+    } else if (size == 36) {
+        sx_verify_value =  1.982481200946593e+5;
+        sy_verify_value = -1.020596636361769e+5;
+    } else if (size == 40) {
+        sx_verify_value = -5.319717441530e+05;
+        sy_verify_value = -3.688834557731e+05;
     }
     sx_err = fabs((sx - sx_verify_value) / sx_verify_value);
     sy_err = fabs((sy - sy_verify_value) / sy_verify_value);
@@ -388,6 +394,16 @@ main(int argc, char * argv[])
             M = 32;
             n = pow(2,M);
             printf("EP-PThreads: Class C\n\n");
+            break;
+        case 'D':
+            M = 36;
+            n = pow(2,M);
+            printf("EP-PThreads: Class D\n\n");
+            break;
+        case 'E':
+            M = 40;
+            n = pow(2,M);
+            printf("EP-PThreads: Class E\n\n");
             break;
         case 'S':
         default:
