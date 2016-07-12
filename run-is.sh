@@ -5,7 +5,7 @@ cd is/cilk
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -22,7 +22,7 @@ cd ../../cpp/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -39,7 +39,7 @@ cd ../../mpi/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -57,7 +57,7 @@ cd ../../openmp/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -74,7 +74,7 @@ cd ../../pthreads/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -91,7 +91,7 @@ cd ../../serial/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for i in {1..5}
 	do
@@ -105,7 +105,7 @@ cd ../../mpi-openmp/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for i in {1..5}
 	do

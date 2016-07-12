@@ -4,7 +4,7 @@
 cd ep/cilk/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -20,7 +20,7 @@ done
 cd ../cpp/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -36,7 +36,7 @@ done
 cd ../mpi/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -53,7 +53,7 @@ done
 cd ../openmp/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -69,7 +69,7 @@ done
 cd ../pthreads/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -85,7 +85,7 @@ done
 cd ../pthreads-cilk/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -101,7 +101,7 @@ done
 cd ../serial/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for i in {1..5}
 	do
