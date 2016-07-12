@@ -5,7 +5,7 @@ cd is/mpi-openmp/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for i in {1..5}
 	do
@@ -44,7 +44,7 @@ cd ../mpi/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -65,7 +65,7 @@ cd ../cilk
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -85,7 +85,7 @@ cd ../cpp/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -105,7 +105,7 @@ cd ../openmp/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -125,7 +125,7 @@ cd ../pthreads/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -145,7 +145,7 @@ cd ../serial/
 make suite
 cd bin
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for i in {1..5}
 	do
@@ -161,7 +161,7 @@ make veryclean
 cd ../../ep/cilk/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -179,7 +179,7 @@ make clean
 cd ../cpp/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -197,7 +197,7 @@ make clean
 cd ../mpi/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -216,7 +216,7 @@ make clean
 cd ../openmp/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -234,7 +234,7 @@ make clean
 cd ../pthreads/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -252,7 +252,7 @@ make clean
 cd ../pthreads-cilk/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for threads in {2,4,8,16,32}
 	do
@@ -270,7 +270,7 @@ make clean
 cd ../serial/
 make all
 
-for class in {A,B,C}
+for class in {S,W,A,B,C}
 do
 	for i in {1..5}
 	do
