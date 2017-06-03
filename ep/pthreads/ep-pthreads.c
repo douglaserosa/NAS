@@ -47,7 +47,7 @@ struct threadStruct {
     int             threadNum;
     double          sumX;
     double          sumY;
-    int             results[10];
+    unsigned long int results[10];
 };
 
 /**
@@ -312,7 +312,7 @@ ep(void)
     struct timeval  tvEnd;
     double          sumX = 0.0;
     double          sumY = 0.0;
-    int             results[10] = { 0 };
+    unsigned long int results[10] = { 0 };
     pthread_t       threads[NUM_THREADS];
     struct threadStruct threadParams[NUM_THREADS];
     int             i, j;
@@ -345,7 +345,7 @@ ep(void)
     printf("----------------\n");
     for (j = 0; j < 10; j++)
     {
-        printf("%d\t%d\n", j, results[j]);
+        printf("%d\t%ld\n", j, results[j]);
     }
     
     printf("sum(X) = %.16le\n", sumX);

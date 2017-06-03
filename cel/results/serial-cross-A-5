@@ -1,6 +1,4 @@
-EP-PThreads: Class A
-
-Numero de threads: 4
+EP-Serial: Class A
 
 l	Qt
 ----------------
@@ -14,11 +12,12 @@ l	Qt
 7	0
 8	0
 9	0
-sum(X) = -4.2958751656347958e+03
-sum(Y) = -1.5807325736786137e+04
+sum(X) = -4.295875165629885e+03
+sum(Y) = -1.580732573678432e+04
 Verification = SUCCESSFUL
-Time: 10.8524 seconds.
+Time: 920.6232 seconds.
 
 
 ---------------------------------
+
 

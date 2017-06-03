@@ -68,12 +68,42 @@
 static double x[2*NK];
 static double q[NQ]; 
 
+int verify (double sx, double sy) {
+  double sx_verify_value, sy_verify_value, sx_err, sy_err;
+  logical verified = false;
+  if (M == 24) {
+    sx_verify_value = -3.247834652034740e+3;
+    sy_verify_value = -6.958407078382297e+3;
+  } else if (M == 25) {
+    sx_verify_value = -2.863319731645753e+3;
+    sy_verify_value = -6.320053679109499e+3;
+  } else if (M == 28) {
+    sx_verify_value = -4.295875165629892e+3;
+    sy_verify_value = -1.580732573678431e+4;
+  } else if (M == 30) {
+    sx_verify_value =  4.033815542441498e+4;
+    sy_verify_value = -2.660669192809235e+4;
+  } else if (M == 32) {
+    sx_verify_value =  4.764367927995374e+4;
+    sy_verify_value = -8.084072988043731e+4;
+  } else if (M == 36) {
+    sx_verify_value =  1.982481200946593e+5;
+    sy_verify_value = -1.020596636361769e+5;
+  } else if (M == 40) {
+    sx_verify_value = -5.319717441530e+05;
+    sy_verify_value = -3.688834557731e+05;
+  }
+  sx_err = fabs((sx - sx_verify_value) / sx_verify_value);
+  sy_err = fabs((sy - sy_verify_value) / sy_verify_value);
+  verified = ((sx_err <= EPSILON) && (sy_err <= EPSILON));
+  return verified;
+}
+
 
 int main() 
 {
   double Mops, t1, t2, t3, t4, x1, x2;
   double sx, sy, tm, an, tt, gc;
-  double sx_verify_value, sy_verify_value, sx_err, sy_err;
   int    np;
   int    i, ik, kk, l, k, nit;
   int    k_offset, j;
@@ -105,7 +135,13 @@ int main()
   printf("\n\n NAS Parallel Benchmarks (NPB3.3-SER-C) - EP Benchmark\n");
   printf("\n Number of random numbers generated: %15s\n", size);
 
-  verified = false;
+  // printf("M  = %ld\n",M);
+  // printf("MK = %ld\n",MK);
+  // printf("MM = %ld\n",MM);
+  // printf("NN = %ld\n",NN);
+  // printf("NK = %ld\n",NK);
+  // printf("NQ = %ld\n",NQ);
+
 
   //--------------------------------------------------------------------
   //  Compute the number of "batches" of random number pairs generated 
@@ -220,37 +256,8 @@ int main()
   tm = timer_read(0);
 
   nit = 0;
-  verified = true;
-  if (M == 24) {
-    sx_verify_value = -3.247834652034740e+3;
-    sy_verify_value = -6.958407078382297e+3;
-  } else if (M == 25) {
-    sx_verify_value = -2.863319731645753e+3;
-    sy_verify_value = -6.320053679109499e+3;
-  } else if (M == 28) {
-    sx_verify_value = -4.295875165629892e+3;
-    sy_verify_value = -1.580732573678431e+4;
-  } else if (M == 30) {
-    sx_verify_value =  4.033815542441498e+4;
-    sy_verify_value = -2.660669192809235e+4;
-  } else if (M == 32) {
-    sx_verify_value =  4.764367927995374e+4;
-    sy_verify_value = -8.084072988043731e+4;
-  } else if (M == 36) {
-    sx_verify_value =  1.982481200946593e+5;
-    sy_verify_value = -1.020596636361769e+5;
-  } else if (M == 40) {
-    sx_verify_value = -5.319717441530e+05;
-    sy_verify_value = -3.688834557731e+05;
-  } else {
-    verified = false;
-  }
-
-  if (verified) {
-    sx_err = fabs((sx - sx_verify_value) / sx_verify_value);
-    sy_err = fabs((sy - sy_verify_value) / sy_verify_value);
-    verified = ((sx_err <= EPSILON) && (sy_err <= EPSILON));
-  }
+  
+  verified = verify(sx, sy);
 
   Mops = pow(2.0, M+1) / tm / 1000000.0;
 

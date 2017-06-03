@@ -167,7 +167,9 @@ getSeedFor(double k)
     double          t;
     int             m;
 
-    m = floor(log2(k)) + 1;
+    // log2 nao disponivel em cross compiler android
+    // m = floor(log2(k)) + 1;
+    m = floor(log(k)/log(2)) + 1;
     b = INITIAL_SEED;
     t = a;
     for (i = 1; i <= m; i++)
