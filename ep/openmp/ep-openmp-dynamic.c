@@ -371,6 +371,16 @@ main(int argc, char * argv[])
             n = pow(2,M);
             printf("EP-OpenMP: Class W\n\n");
             break;
+        case 'X':
+            M = 26;
+            n = pow(2,M);
+            printf("EP-OpenMP: Class X\n\n");
+            break;
+        case 'Y':
+            M = 27;
+            n = pow(2,M);
+            printf("EP-OpenMP: Class Y\n\n");
+            break;
         case 'A':
             M = 28;
             n = pow(2,M);
