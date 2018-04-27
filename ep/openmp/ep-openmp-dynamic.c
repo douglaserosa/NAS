@@ -16,7 +16,13 @@
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
 
-// variavel para guardar o tamanho de N da entrada (2^N)
+// quantidade de TASKS definido em função de n
+int NUM_TASKS = 1;
+
+// tamanho do chunk
+int CHUNK_SIZE = 1;
+
+// variavel para guardar o tamanho de M da entrada (2^M)
 int M;
 
 static double   n;
@@ -45,7 +51,7 @@ typedef struct Pair
  * estrutura para armazenar os parametros a serem utilizados nas threads
  */
 struct threadStruct {
-    int             threadNum;
+    int             taskNum;
     double          sumX;
     double          sumY;
     int             results[10];
@@ -224,11 +230,13 @@ struct threadStruct * epThread (struct threadStruct * params) {
      * e somado 1 para pegarmos o primeiro seed que esta thread irá calcular.
      */
     
-    from = params->threadNum * (n / NUM_THREADS);
-    until = (params->threadNum  + 1) * (n / NUM_THREADS);
+    // from = params->taskNum * (n / NUM_THREADS);
+    // until = (params->taskNum  + 1) * (n / NUM_THREADS);
+    from = params->taskNum * CHUNK_SIZE;
+    until = from + CHUNK_SIZE - 1;
     random_seed = getSeedFor(from * 2 + 1);
 
-    for (j = from + 1; j <= until; j++)
+    for (j = from; j <= until; j++)
     {
         /* Obtain the next pair of random numbers */
         pair = randomPair(&random_seed);
@@ -307,17 +315,17 @@ ep(void)
     double          sumX = 0.0;
     double          sumY = 0.0;
     int             results[10] = { 0 };
-    struct threadStruct threadParams[NUM_THREADS];
+    struct threadStruct threadParams[NUM_TASKS];
     int             i, j;
     double          temp;
 
     /* Get the starting time so we can later calculate running time */
     gettimeofday(&tvStart, NULL);
 
-    #pragma omp parallel private(i,j) shared (threadParams)
+    #pragma omp parallel for private(i,j) schedule(dynamic,CHUNK_SIZE)
+    for(i = 0; i < NUM_TASKS; ++i)
     {
-        i = omp_get_thread_num();
-        threadParams[i].threadNum = i;
+        threadParams[i].taskNum = i;
         threadParams[i].sumX = 0.0;
         threadParams[i].sumY = 0.0;
         for (j = 0; j < 10; j++) {
@@ -326,7 +334,8 @@ ep(void)
         epThread(&threadParams[i]);
     }
     
-    for (i = 0; i < NUM_THREADS; i++) {
+    #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
+    for (i = 0; i < NUM_TASKS; i++) {
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
         for(j = 0; j < 10; j++) {
@@ -406,7 +415,13 @@ main(int argc, char * argv[])
     // numero de threads para o problema
     omp_set_num_threads(atoi(argv[2]));
     NUM_THREADS = atoi(argv[2]);
-    printf("Numero de threads: %d\n\n", NUM_THREADS);
+    // 24 é o tamanho de M para a menor classe
+    CHUNK_SIZE = atoi(argv[3]);
+    NUM_TASKS = ceil(n / CHUNK_SIZE);
+    printf("Tamanho do problema: %ld\n", (unsigned long) n);
+    printf("Numero de threads: %d\n", NUM_THREADS);
+    printf("Tamanho do chunk: %d\n", CHUNK_SIZE);
+    printf("Numero de tasks: %d\n\n", NUM_TASKS);
     
     ep();
 
