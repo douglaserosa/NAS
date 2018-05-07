@@ -1,0 +1,28 @@
+EP-OpenMP: Class W
+
+Tamanho do problema: 33554432
+Numero de threads: 2
+Tamanho do chunk: 1024
+Numero de tasks: 32768
+
+l	Qt
+----------------
+0	12281576
+1	11729692
+2	2202726
+3	137368
+4	3371
+5	36
+6	0
+7	0
+8	0
+9	0
+sum(X) = -2.8633197316460810e+03
+sum(Y) = -6.3200536791087161e+03
+Verification = SUCCESSFUL
+Time: 6.2119 seconds.
+
+
+---------------------------------
+
+Battery: 79
