@@ -16,15 +16,13 @@
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
 
-// quantidade de TASKS definido em função de n
-int NUM_TASKS = 1;
-
-// tamanho do chunk
+// Tamanho do chunk. é alterado pelo parametro recebido na chamada do programa
 int CHUNK_SIZE = 1;
 
 // variavel para guardar o tamanho de M da entrada (2^M)
 int M;
 
+// variavel para guardar o tamanho de N da entrada (2^M)
 static double   n;
 //static double a = pow(5, 13);
 static double a = 1220703125.0;
@@ -51,7 +49,7 @@ typedef struct Pair
  * estrutura para armazenar os parametros a serem utilizados nas threads
  */
 struct threadStruct {
-    int             taskNum;
+    int             threadNum;
     double          sumX;
     double          sumY;
     int             results[10];
@@ -205,74 +203,6 @@ randomPair(double *random_seed)
     return pair;
 }
 
-
-/**
- * sorteia n/NUM_THREADS numeros aleatorios 
- * @param n [description]
- */
-struct threadStruct * epThread (struct threadStruct * params) {
-    double   random_seed;
-    unsigned long   j;
-    Pair            pair;
-    double          t;
-    double          temp;
-    int             maxXY;
-    unsigned long             from;
-    unsigned long             until;
-
-    /*
-     * Gera o primeiro seed para esta thread. Cada laço sorteia um par de numeros
-     * aleatorios (ou seja, sorteia 2 numeros).
-     * Multiplicados o numero da thread (0,1,2,3,..) pela quantidade de
-     * numeros que serão sorteados pelo benchmark divididos pela 
-     * quantidade de threads criadas.
-     * Esta quantidade deve ser multiplicada por 2 (por causa dos pares de numeros)
-     * e somado 1 para pegarmos o primeiro seed que esta thread irá calcular.
-     */
-    
-    // from = params->taskNum * (n / NUM_THREADS);
-    // until = (params->taskNum  + 1) * (n / NUM_THREADS);
-    from = params->taskNum * CHUNK_SIZE;
-    until = from + CHUNK_SIZE - 1;
-    random_seed = getSeedFor(from * 2 + 1);
-
-    for (j = from; j <= until; j++)
-    {
-        /* Obtain the next pair of random numbers */
-        pair = randomPair(&random_seed);
-        
-        /* Is this pair acceptable? */
-        t = (pair.x * pair.x) + (pair.y * pair.y);
-        if (t > 1)
-        {
-            /* Nope. Reject */
-            continue;
-        }
-        
-        /* Calculate the multiplier for the values in this pair, and multiply */
-        temp = sqrt((-2 * log(t)) / t);
-        pair.x *= temp;
-        pair.y *= temp;
-        
-        /* Keep a running sum of the x and y values */
-        params->sumX += pair.x;
-        params->sumY += pair.y;
-        
-        /*
-         * Find the maximum of the absolute value of each value in the
-         * pair. Take the floor of that maximum (by converting it to an
-         * integer) so that we can use it as an index into the results
-         * counters array.
-         */
-        maxXY = maximum(fabs(pair.x), fabs(pair.y));
-        
-        /* Update the appropriate counter corresponding to this value. */
-        params->results[maxXY]++;
-    }
-
-    return params;
-}
-
 int verify (int size, double sx, double sy) {
     int verified = 0;
     double sx_verify_value, sy_verify_value, sx_err, sy_err;
@@ -307,35 +237,75 @@ int verify (int size, double sx, double sy) {
  * sums. This procedure is itself not free, but makes use of many free
  * sub-procedures.
  */
-void
-ep(void)
+int ep(void)
 {
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
     double          sumX = 0.0;
     double          sumY = 0.0;
     int             results[10] = { 0 };
-    struct threadStruct threadParams[NUM_TASKS];
+    struct threadStruct threadParams[NUM_THREADS];
     int             i, j;
-    double          temp;
 
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
+    double          random_seed;
+    Pair            pair;
+    double          t;
+    double          multiplier;
+    int             maxXY;
+    int             verification;
 
-    #pragma omp parallel for private(i,j) schedule(static,CHUNK_SIZE)
-    for(i = 0; i < NUM_TASKS; ++i)
+    #pragma omp parallel private(i,j) shared (threadParams)
     {
-        threadParams[i].taskNum = i;
+        i = omp_get_thread_num();
+        threadParams[i].threadNum = i;
         threadParams[i].sumX = 0.0;
         threadParams[i].sumY = 0.0;
         for (j = 0; j < 10; j++) {
             threadParams[i].results[j] = 0;
         }
-        epThread(&threadParams[i]);
+    }
+
+    #pragma omp parallel for private(i,j,random_seed,pair,t,multiplier,maxXY) shared (threadParams) schedule(static,CHUNK_SIZE)
+    for (i = 0; i < (int) n; ++i)
+    {
+        j = omp_get_thread_num();
+        // epThread(&threadParams[j], (double) i);
+
+        if (i % CHUNK_SIZE == 0) {
+            random_seed = getSeedFor(i * 2 + 1);
+        }
+        /* Obtain the next pair of random numbers */
+        pair = randomPair(&random_seed);
+
+        /* Is this pair acceptable? */
+        t = (pair.x * pair.x) + (pair.y * pair.y);
+        if (t > 1)
+        {
+            /* Nope. Reject */
+            continue;
+        }
+
+        /* Calculate the multiplier for the values in this pair, and multiply */
+        multiplier = sqrt((-2 * log(t)) / t);
+        pair.x *= multiplier;
+        pair.y *= multiplier;
+
+        /* Keep a running sum of the x and y values */
+        threadParams[j].sumX += pair.x;
+        threadParams[j].sumY += pair.y;
+
+        /*
+            * Find the maximum of the absolute value of each value in the
+            * pair. Take the floor of that maximum (by converting it to an
+            * integer) so that we can use it as an index into the results
+            * counters array.
+            */
+        maxXY = maximum(fabs(pair.x), fabs(pair.y));
+
+        /* Update the appropriate counter corresponding to this value. */
+        threadParams[j].results[maxXY]++;
     }
     
     #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
-    for (i = 0; i < NUM_TASKS; i++) {
+    for (i = 0; i < NUM_THREADS; i++) {
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
         for(j = 0; j < 10; j++) {
@@ -353,79 +323,87 @@ ep(void)
     printf("sum(X) = %.16le\n", sumX);
     printf("sum(Y) = %.16le\n", sumY);
 
-    if ( verify(M, sumX, sumY) ) {
+    verification = verify(M, sumX, sumY);
+    if ( verification ) {
         printf("Verification = SUCCESSFUL\n");
     } else {
         printf("Verification = UNSUCCESSFUL\n");
     }
 
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
+    return verification;
 }
 
 
 int
 main(int argc, char * argv[])
 {
+    // variaveis para calculo de tempo
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
+    double          totalTime, begin, end;
+    int             verification;
     // classe do problema
-    char class = argv[1][0];
+    char            class;
+
+    /* Get the starting time so we can later calculate running time */
+    gettimeofday(&tvStart, NULL);
+
+    class = argv[1][0];
+
+    printf("---------------------------------\n");
+
     switch (class) {
         case 'W':
             M = 25;
             n = pow(2,M);
-            printf("EP-OpenMP: Class W\n\n");
-            break;
-        case 'X':
-            M = 26;
-            n = pow(2,M);
-            printf("EP-OpenMP: Class X\n\n");
-            break;
-        case 'Y':
-            M = 27;
-            n = pow(2,M);
-            printf("EP-OpenMP: Class Y\n\n");
+            printf("EP-OpenMP: Class W\n");
             break;
         case 'A':
             M = 28;
             n = pow(2,M);
-            printf("EP-OpenMP: Class A\n\n");
+            printf("EP-OpenMP: Class A\n");
             break;
         case 'B':
             M = 30;
             n = pow(2,M);
-            printf("EP-OpenMP: Class B\n\n");
+            printf("EP-OpenMP: Class B\n");
             break;
         case 'C':
             M = 32;
             n = pow(2,M);
-            printf("EP-OpenMP: Class C\n\n");
+            printf("EP-OpenMP: Class C\n");
             break;
         case 'S':
         default:
             M = 24;
             n = pow(2,M);
-            printf("EP-OpenMP: Class S\n\n");
+            printf("EP-OpenMP: Class S\n");
             break;
     }
     // numero de threads para o problema
     omp_set_num_threads(atoi(argv[2]));
     NUM_THREADS = atoi(argv[2]);
-    // 24 é o tamanho de M para a menor classe
     CHUNK_SIZE = atoi(argv[3]);
-    NUM_TASKS = ceil(n / CHUNK_SIZE);
-    printf("Tamanho do problema: %ld\n", (unsigned long) n);
+    if (CHUNK_SIZE <= 0) {
+        CHUNK_SIZE = 1;
+    }
+    printf("Tamanho do problema: 2^%d = %ld\n", M, (long) n);
     printf("Numero de threads: %d\n", NUM_THREADS);
-    printf("Tamanho do chunk: %d\n", CHUNK_SIZE);
-    printf("Numero de tasks: %d\n\n", NUM_TASKS);
+    printf("Tamanho do Chunk: %d\n\n", CHUNK_SIZE);
     
-    ep();
+    verification = ep();
 
-    printf("\n\n---------------------------------\n\n");
+    /* Get the ending time so we can calculate running time */
+    gettimeofday(&tvEnd, NULL);
+
+    /* Calculate and display the running time */
+    begin = (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000));
+    end = (tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000));
+    totalTime = ( end - begin );
+    printf("Time: %.4lf seconds.\n", totalTime);
+
+    // saida: classe;threads;M;N;verificacao;chunksize;begin;end;tempo
+    printf("SUMMARY: %c;%d;%d;%ld;%d;%d;%.4lf;%.4lf;%.4lf",class,NUM_THREADS,M,(long)n,verification,CHUNK_SIZE,begin,end,totalTime);
 
     return 0;
 }
