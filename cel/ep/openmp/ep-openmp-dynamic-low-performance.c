@@ -16,7 +16,13 @@
 // quantidade de threads. é alterada pelo parametro recebido na chamada do programa
 int NUM_THREADS = 1;
 
-// variavel para guardar o tamanho de N da entrada (2^N)
+// quantidade de TASKS definido em função de n
+int NUM_TASKS = 1;
+
+// tamanho do chunk
+int CHUNK_SIZE = 1;
+
+// variavel para guardar o tamanho de M da entrada (2^M)
 int M;
 
 static double   n;
@@ -45,7 +51,7 @@ typedef struct Pair
  * estrutura para armazenar os parametros a serem utilizados nas threads
  */
 struct threadStruct {
-    int             threadNum;
+    int             taskNum;
     double          sumX;
     double          sumY;
     int             results[10];
@@ -204,44 +210,65 @@ randomPair(double *random_seed)
  * sorteia n/NUM_THREADS numeros aleatorios 
  * @param n [description]
  */
-struct threadStruct * epThread (struct threadStruct * params, unsigned long seedNum) {
+struct threadStruct * epThread (struct threadStruct * params) {
     double   random_seed;
+    unsigned long   j;
     Pair            pair;
     double          t;
     double          temp;
     int             maxXY;
+    unsigned long             from;
+    unsigned long             until;
 
-    random_seed = getSeedFor(seedNum * 2 + 1);
-    /* Obtain the next pair of random numbers */
-    pair = randomPair(&random_seed);
-    
-    /* Is this pair acceptable? */
-    t = (pair.x * pair.x) + (pair.y * pair.y);
-    if (t > 1)
-    {
-        /* Nope. Reject */
-        return params;
-    }
-    
-    /* Calculate the multiplier for the values in this pair, and multiply */
-    temp = sqrt((-2 * log(t)) / t);
-    pair.x *= temp;
-    pair.y *= temp;
-    
-    /* Keep a running sum of the x and y values */
-    params->sumX += pair.x;
-    params->sumY += pair.y;
-    
     /*
-        * Find the maximum of the absolute value of each value in the
-        * pair. Take the floor of that maximum (by converting it to an
-        * integer) so that we can use it as an index into the results
-        * counters array.
-        */
-    maxXY = maximum(fabs(pair.x), fabs(pair.y));
+     * Gera o primeiro seed para esta thread. Cada laço sorteia um par de numeros
+     * aleatorios (ou seja, sorteia 2 numeros).
+     * Multiplicados o numero da thread (0,1,2,3,..) pela quantidade de
+     * numeros que serão sorteados pelo benchmark divididos pela 
+     * quantidade de threads criadas.
+     * Esta quantidade deve ser multiplicada por 2 (por causa dos pares de numeros)
+     * e somado 1 para pegarmos o primeiro seed que esta thread irá calcular.
+     */
     
-    /* Update the appropriate counter corresponding to this value. */
-    params->results[maxXY]++;
+    // from = params->taskNum * (n / NUM_THREADS);
+    // until = (params->taskNum  + 1) * (n / NUM_THREADS);
+    from = params->taskNum * CHUNK_SIZE;
+    until = from + CHUNK_SIZE - 1;
+    random_seed = getSeedFor(from * 2 + 1);
+
+    for (j = from; j <= until; j++)
+    {
+        /* Obtain the next pair of random numbers */
+        pair = randomPair(&random_seed);
+        
+        /* Is this pair acceptable? */
+        t = (pair.x * pair.x) + (pair.y * pair.y);
+        if (t > 1)
+        {
+            /* Nope. Reject */
+            continue;
+        }
+        
+        /* Calculate the multiplier for the values in this pair, and multiply */
+        temp = sqrt((-2 * log(t)) / t);
+        pair.x *= temp;
+        pair.y *= temp;
+        
+        /* Keep a running sum of the x and y values */
+        params->sumX += pair.x;
+        params->sumY += pair.y;
+        
+        /*
+         * Find the maximum of the absolute value of each value in the
+         * pair. Take the floor of that maximum (by converting it to an
+         * integer) so that we can use it as an index into the results
+         * counters array.
+         */
+        maxXY = maximum(fabs(pair.x), fabs(pair.y));
+        
+        /* Update the appropriate counter corresponding to this value. */
+        params->results[maxXY]++;
+    }
 
     return params;
 }
@@ -288,33 +315,27 @@ ep(void)
     double          sumX = 0.0;
     double          sumY = 0.0;
     int             results[10] = { 0 };
-    struct threadStruct threadParams[NUM_THREADS];
-    unsigned long   i, j;
+    struct threadStruct threadParams[NUM_TASKS];
+    int             i, j;
     double          temp;
 
     /* Get the starting time so we can later calculate running time */
     gettimeofday(&tvStart, NULL);
 
-    // inicialização da estrutura de dados.
-    #pragma omp parallel private(i,j) shared (threadParams)
+    #pragma omp parallel for private(i,j) schedule(dynamic,CHUNK_SIZE)
+    for(i = 0; i < NUM_TASKS; ++i)
     {
-        i = omp_get_thread_num();
-        threadParams[i].threadNum = i;
+        threadParams[i].taskNum = i;
         threadParams[i].sumX = 0.0;
         threadParams[i].sumY = 0.0;
         for (j = 0; j < 10; j++) {
             threadParams[i].results[j] = 0;
         }
-    }
-
-    #pragma omp parallel for private(i,j) schedule(dynamic,M)
-    for (i = 0; i < (int) n; ++i)
-    {
-        j = omp_get_thread_num();
-        epThread(&threadParams[j], (double) i);
+        epThread(&threadParams[i]);
     }
     
-    for (i = 0; i < NUM_THREADS; i++) {
+    #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
+    for (i = 0; i < NUM_TASKS; i++) {
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
         for(j = 0; j < 10; j++) {
@@ -326,7 +347,7 @@ ep(void)
     printf("----------------\n");
     for (j = 0; j < 10; j++)
     {
-        printf("%ld\t%d\n", j, results[j]);
+        printf("%d\t%d\n", j, results[j]);
     }
     
     printf("sum(X) = %.16le\n", sumX);
@@ -359,6 +380,16 @@ main(int argc, char * argv[])
             n = pow(2,M);
             printf("EP-OpenMP: Class W\n\n");
             break;
+        case 'X':
+            M = 26;
+            n = pow(2,M);
+            printf("EP-OpenMP: Class X\n\n");
+            break;
+        case 'Y':
+            M = 27;
+            n = pow(2,M);
+            printf("EP-OpenMP: Class Y\n\n");
+            break;
         case 'A':
             M = 28;
             n = pow(2,M);
@@ -384,7 +415,13 @@ main(int argc, char * argv[])
     // numero de threads para o problema
     omp_set_num_threads(atoi(argv[2]));
     NUM_THREADS = atoi(argv[2]);
-    printf("Numero de threads: %d\n\n", NUM_THREADS);
+    // 24 é o tamanho de M para a menor classe
+    CHUNK_SIZE = atoi(argv[3]);
+    NUM_TASKS = ceil(n / CHUNK_SIZE);
+    printf("Tamanho do problema: %ld\n", (unsigned long) n);
+    printf("Numero de threads: %d\n", NUM_THREADS);
+    printf("Tamanho do chunk: %d\n", CHUNK_SIZE);
+    printf("Numero de tasks: %d\n\n", NUM_TASKS);
     
     ep();
 
