@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "thread": "c",
-        "ratio": "c",
-        "__locale": "c"
-    }
-}
