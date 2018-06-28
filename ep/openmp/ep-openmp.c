@@ -320,6 +320,7 @@ int ep(void)
         epThread(&threadParams[i]);
     }
     
+    #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
     for (i = 0; i < NUM_THREADS; i++) {
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
@@ -413,7 +414,7 @@ main(int argc, char * argv[])
     totalTime = ( end - begin );
     printf("Time: %.4lf seconds.\n", totalTime);
 
-    // saida: classe;threads;M;N;verificacao;chunksize;begin;end;tempo
+    // saida: classe;threads;M;N;verificacao;begin;end;tempo
     printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf",class,NUM_THREADS,M,(long)n,verification,begin,end,totalTime);
 
     return 0;

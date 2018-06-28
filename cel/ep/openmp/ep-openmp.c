@@ -299,20 +299,14 @@ int verify (int size, double sx, double sy) {
  * sums. This procedure is itself not free, but makes use of many free
  * sub-procedures.
  */
-void
-ep(void)
+int ep(void)
 {
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
     double          sumX = 0.0;
     double          sumY = 0.0;
     int             results[10] = { 0 };
     struct threadStruct threadParams[NUM_THREADS];
     int             i, j;
-    double          temp;
-
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
+    int             verification;
 
     #pragma omp parallel private(i,j) shared (threadParams)
     {
@@ -326,6 +320,7 @@ ep(void)
         epThread(&threadParams[i]);
     }
     
+    #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
     for (i = 0; i < NUM_THREADS; i++) {
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
@@ -344,63 +339,83 @@ ep(void)
     printf("sum(X) = %.16le\n", sumX);
     printf("sum(Y) = %.16le\n", sumY);
 
-    if ( verify(M, sumX, sumY) ) {
+    verification = verify(M, sumX, sumY);
+    if ( verification ) {
         printf("Verification = SUCCESSFUL\n");
     } else {
         printf("Verification = UNSUCCESSFUL\n");
     }
 
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
+    return verification;
 }
 
 
 int
 main(int argc, char * argv[])
 {
+    // variaveis para calculo de tempo
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
+    double          totalTime, begin, end;
+    int             verification;
     // classe do problema
-    char class = argv[1][0];
+    char            class;
+
+    /* Get the starting time so we can later calculate running time */
+    gettimeofday(&tvStart, NULL);
+
+    class = argv[1][0];
+
+    printf("---------------------------------\n");
+
     switch (class) {
         case 'W':
             M = 25;
             n = pow(2,M);
-            printf("EP-OpenMP: Class W\n\n");
+            printf("EP-OpenMP: Class W\n");
             break;
         case 'A':
             M = 28;
             n = pow(2,M);
-            printf("EP-OpenMP: Class A\n\n");
+            printf("EP-OpenMP: Class A\n");
             break;
         case 'B':
             M = 30;
             n = pow(2,M);
-            printf("EP-OpenMP: Class B\n\n");
+            printf("EP-OpenMP: Class B\n");
             break;
         case 'C':
             M = 32;
             n = pow(2,M);
-            printf("EP-OpenMP: Class C\n\n");
+            printf("EP-OpenMP: Class C\n");
             break;
         case 'S':
         default:
             M = 24;
             n = pow(2,M);
-            printf("EP-OpenMP: Class S\n\n");
+            printf("EP-OpenMP: Class S\n");
             break;
     }
     // numero de threads para o problema
     omp_set_num_threads(atoi(argv[2]));
     NUM_THREADS = atoi(argv[2]);
-    printf("Numero de threads: %d\n\n", NUM_THREADS);
+        
+    printf("Tamanho do problema: 2^%d = %ld\n", M, (long) n);
+    printf("Numero de threads: %d\n", NUM_THREADS);
     
-    ep();
+    verification = ep();
 
-    printf("\n\n---------------------------------\n\n");
+    /* Get the ending time so we can calculate running time */
+    gettimeofday(&tvEnd, NULL);
+
+    /* Calculate and display the running time */
+    begin = (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000));
+    end = (tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000));
+    totalTime = ( end - begin );
+    printf("Time: %.4lf seconds.\n", totalTime);
+
+    // saida: classe;threads;M;N;verificacao;begin;end;tempo
+    printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf",class,NUM_THREADS,M,(long)n,verification,begin,end,totalTime);
 
     return 0;
 }
