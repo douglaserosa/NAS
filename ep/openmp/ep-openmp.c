@@ -415,7 +415,7 @@ main(int argc, char * argv[])
     printf("Time: %.4lf seconds.\n", totalTime);
 
     // saida: classe;threads;M;N;verificacao;begin;end;tempo
-    printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf",class,NUM_THREADS,M,(long)n,verification,begin,end,totalTime);
+    printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf;",class,NUM_THREADS,M,(long)n,verification,begin,end,totalTime);
 
     return 0;
 }

@@ -8,7 +8,7 @@ main(int argc, char * argv[])
 {
     Mobile phone;
 
-    std::cout << "Battery: " << phone.getCapacity() << std::endl;
+    std::cout << phone.getCapacity() << std::endl;
 
     return 0;
 }
