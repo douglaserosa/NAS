@@ -1,7 +1,7 @@
 #!/system/bin/sh
 
 # ----- EP-OPENMP-DYNAMIC
-for class in W
+for class in S
 do
 	for threads in 4
 	do
@@ -16,14 +16,14 @@ do
                 echo "Exec   :" $i
                 echo ""
                 ./ep-openmp-dynamic $class $threads $chunk > results/chunk-size-test/dynamic/ep-openmp-dynamic-$class-$threads-$chunk--$i
-                ./battery >> results/openmp-dynamic/ep-openmp-dynamic-$class-$threads-$chunk--$i
+                ./battery >> results/chunk-size-test/dynamic/ep-openmp-dynamic-$class-$threads-$chunk--$i
             done
         done
 	done
 done
 
 # ----- EP-OPENMP-STATIC
-for class in W
+for class in S
 do
 	for threads in 4
 	do
@@ -38,7 +38,7 @@ do
                 echo "Exec   :" $i
                 echo ""
                 ./ep-openmp-static $class $threads $chunk > results/chunk-size-test/static/ep-openmp-static-$class-$threads-$chunk--$i
-                ./battery >> results/openmp-static/ep-openmp-static-$class-$threads-$chunk--$i
+                ./battery >> results/chunk-size-test/static/ep-openmp-static-$class-$threads-$chunk--$i
             done
         done
 	done
