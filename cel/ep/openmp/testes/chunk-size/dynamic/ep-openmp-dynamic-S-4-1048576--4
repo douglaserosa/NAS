@@ -1,0 +1,23 @@
+---------------------------------
+EP-OpenMP: Class S
+Tamanho do problema: 2^24 = 16777216
+Numero de threads: 4
+Tamanho do Chunk: 1048576
+
+l	Qt
+----------------
+0	6806027
+1	5498458
+2	1031437
+3	64142
+4	1538
+5	17
+6	0
+7	0
+8	0
+9	0
+sum(X) = nan
+sum(Y) = nan
+Verification = UNSUCCESSFUL
+Time: 3.7964 seconds.
+SUMMARY: S;4;24;16777216;0;1530820961.6942;1530820965.4906;3.7964;1048576;74
