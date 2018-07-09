@@ -47,7 +47,7 @@ struct threadStruct {
     int             threadNum;
     double          sumX;
     double          sumY;
-    int             results[10];
+    unsigned long int results[10];
 };
 
 /**
@@ -219,6 +219,12 @@ int verify (int size, double sx, double sy) {
     } else if (size == 32) {
         sx_verify_value =  4.764367927995374e+4;
         sy_verify_value = -8.084072988043731e+4;
+    } else if (size == 36) {
+        sx_verify_value =  1.982481200946593e+5;
+        sy_verify_value = -1.020596636361769e+5;
+    } else if (size == 40) {
+        sx_verify_value = -5.319717441530e+05;
+        sy_verify_value = -3.688834557731e+05;
     }
     sx_err = fabs((sx - sx_verify_value) / sx_verify_value);
     sy_err = fabs((sy - sy_verify_value) / sy_verify_value);
@@ -299,21 +305,15 @@ void* epThread (void *params) {
  * sums. This procedure is itself not free, but makes use of many free
  * sub-procedures.
  */
-void
-ep(void)
+int ep(void)
 {
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
     double          sumX = 0.0;
     double          sumY = 0.0;
-    int             results[10] = { 0 };
+    unsigned long int results[10] = { 0 };
     pthread_t       threads[NUM_THREADS];
     struct threadStruct threadParams[NUM_THREADS];
     int             i, j;
-    double          temp;
-
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
+    int             verification;
 
     for (i = 0; i < NUM_THREADS; i++) {
         threadParams[i].threadNum = i;
@@ -339,55 +339,72 @@ ep(void)
     printf("----------------\n");
     for (j = 0; j < 10; j++)
     {
-        printf("%d\t%d\n", j, results[j]);
+        printf("%d\t%ld\n", j, results[j]);
     }
     
     printf("sum(X) = %.16le\n", sumX);
     printf("sum(Y) = %.16le\n", sumY);
 
-    if ( verify(M, sumX, sumY) ) {
+    verification = verify(M, sumX, sumY);
+    if ( verification ) {
         printf("Verification = SUCCESSFUL\n");
     } else {
         printf("Verification = UNSUCCESSFUL\n");
     }
 
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
+    return verification;
 }
 
 
 int
 main(int argc, char * argv[])
 {
-    // numero de threads para o problema
-    NUM_THREADS = atoi(argv[2]);
+    // variaveis para calculo de tempo
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
+    double          totalTime, begin, end;
+    int             verification;
     // classe do problema
-    char class = argv[1][0];
+    char            class;
+
+    /* Get the starting time so we can later calculate running time */
+    gettimeofday(&tvStart, NULL);
+
+    // classe do problema
+    class = argv[1][0];
+
+    printf("---------------------------------\n");
+    
     switch (class) {
         case 'W':
             M = 25;
             n = pow(2,M);
-            printf("EP-PThreads: Class W\n\n");
+            printf("EP-PThreads: Class W\n");
             break;
         case 'A':
             M = 28;
             n = pow(2,M);
-            printf("EP-PThreads: Class A\n\n");
+            printf("EP-PThreads: Class A\n");
             break;
         case 'B':
             M = 30;
             n = pow(2,M);
-            printf("EP-PThreads: Class B\n\n");
+            printf("EP-PThreads: Class B\n");
             break;
         case 'C':
             M = 32;
             n = pow(2,M);
-            printf("EP-PThreads: Class C\n\n");
+            printf("EP-PThreads: Class C\n");
+            break;
+        case 'D':
+            M = 36;
+            n = pow(2,M);
+            printf("EP-PThreads: Class D\n");
+            break;
+        case 'E':
+            M = 40;
+            n = pow(2,M);
+            printf("EP-PThreads: Class E\n");
             break;
         case 'S':
         default:
@@ -396,11 +413,25 @@ main(int argc, char * argv[])
             printf("EP-PThreads: Class S\n\n");
             break;
     }
-    printf("Numero de threads: %d\n\n", NUM_THREADS);
+    // numero de threads para o problema
+    NUM_THREADS = atoi(argv[2]);
+    
+    printf("Tamanho do problema: 2^%d = %ld\n", M, (long) n);
+    printf("Numero de threads: %d\n", NUM_THREADS);
 
-    ep();
+    verification = ep();
 
-    printf("\n\n---------------------------------\n\n");
+    /* Get the ending time so we can calculate running time */
+    gettimeofday(&tvEnd, NULL);
+
+    /* Calculate and display the running time */
+    begin = (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000));
+    end = (tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000));
+    totalTime = ( end - begin );
+    printf("Time: %.4lf seconds.\n", totalTime);
+
+    // saida: classe;threads;M;N;verificacao;begin;end;tempo
+    printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf;",class,NUM_THREADS,M,(long)n,verification,begin,end,totalTime);
 
     return 0;
 }

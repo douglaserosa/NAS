@@ -167,9 +167,8 @@ getSeedFor(double k)
     double          t;
     int             m;
 
-    // log2 nao disponivel em cross compiler android
-    // m = floor(log2(k)) + 1;
-    m = floor(log(k)/log(2)) + 1;
+    // m = floor(log(k)/log(2)) + 1;
+    m = floor(log2(k)) + 1;
     b = INITIAL_SEED;
     t = a;
     for (i = 1; i <= m; i++)
@@ -302,21 +301,15 @@ void epThread (struct threadStruct * params) {
  * sums. This procedure is itself not free, but makes use of many free
  * sub-procedures.
  */
-void
-ep(void)
+int ep(void)
 {
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
     double          sumX = 0.0;
     double          sumY = 0.0;
     int             results[10] = { 0 };
     struct threadStruct threadParams[NUM_THREADS];
     std::thread     threads[NUM_THREADS];
     int             i, j;
-    double          temp;
-
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
+    int             verification;
 
     for (i = 0; i < NUM_THREADS; i++) {
         threadParams[i].threadNum = i;
@@ -347,62 +340,83 @@ ep(void)
     printf("sum(X) = %.15le\n", sumX);
     printf("sum(Y) = %.15le\n", sumY);
 
-    if ( verify(M, sumX, sumY) ) {
+    verification = verify(M, sumX, sumY);
+    if ( verification ) {
         printf("Verification = SUCCESSFUL\n");
     } else {
         printf("Verification = UNSUCCESSFUL\n");
     }
 
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
+    return verification;
 }
 
 
 int
 main(int argc, char * argv[])
 {
+    // variaveis para calculo de tempo
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
+    double          totalTime, begin, end;
+    int             verification;
     // classe do problema
-    char classSize = argv[1][0];
+    char            classSize;
+
+    /* Get the starting time so we can later calculate running time */
+    gettimeofday(&tvStart, NULL);
+
+    // classe do problema
+    classSize = argv[1][0];
+
+    printf("---------------------------------\n");
+
     switch (classSize) {
         case 'W':
             M = 25;
             n = pow(2,M);
-            printf("EP-CPP: Class W\n\n");
+            printf("EP-CPP: Class W\n");
             break;
         case 'A':
             M = 28;
             n = pow(2,M);
-            printf("EP-CPP: Class A\n\n");
+            printf("EP-CPP: Class A\n");
             break;
         case 'B':
             M = 30;
             n = pow(2,M);
-            printf("EP-CPP: Class B\n\n");
+            printf("EP-CPP: Class B\n");
             break;
         case 'C':
             M = 32;
             n = pow(2,M);
-            printf("EP-CPP: Class C\n\n");
+            printf("EP-CPP: Class C\n");
             break;
         case 'S':
         default:
             M = 24;
             n = pow(2,M);
-            printf("EP-CPP: Class S\n\n");
+            printf("EP-CPP: Class S\n");
             break;
     }
     // numero de threads para o problema
     NUM_THREADS = atoi(argv[2]);
-    printf("Numero de threads: %d\n\n", NUM_THREADS);
     
-    ep();
+    printf("Tamanho do problema: 2^%d = %ld\n", M, (long) n);
+    printf("Numero de threads: %d\n", NUM_THREADS);
 
-    printf("\n\n---------------------------------\n\n");
+    verification = ep();
+
+    /* Get the ending time so we can calculate running time */
+    gettimeofday(&tvEnd, NULL);
+
+    /* Calculate and display the running time */
+    begin = (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000));
+    end = (tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000));
+    totalTime = ( end - begin );
+    printf("Time: %.4lf seconds.\n", totalTime);
+
+    // saida: classe;threads;M;N;verificacao;begin;end;tempo
+    printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf;",classSize,NUM_THREADS,M,(long)n,verification,begin,end,totalTime);
 
     return 0;
 }
