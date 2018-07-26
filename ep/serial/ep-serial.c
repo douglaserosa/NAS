@@ -186,8 +186,7 @@ int verify (int size, double sx, double sy) {
  * sums. This procedure is itself not free, but makes use of many free
  * sub-procedures.
  */
-void
-ep(void)
+int ep(void)
 {
     int             maxXY;
     int             results[10] = { 0 };
@@ -197,12 +196,8 @@ ep(void)
     double          sumY = 0.0;
     double          t;
     double          temp;
-    struct timeval  tvStart;
-    struct timeval  tvEnd;
+    int             verification;
     
-    /* Get the starting time so we can later calculate running time */
-    gettimeofday(&tvStart, NULL);
-
     /* Initialize a and the initial seed */
     a = pow(5, 13);
     random_seed = 271828183;
@@ -254,46 +249,66 @@ ep(void)
     printf("sum(X) = %.15le\n", sumX);
     printf("sum(Y) = %.15le\n", sumY);
 
-    if ( verify(M, sumX, sumY) ) {
+    verification = verify(M, sumX, sumY);
+    if ( verification ) {
         printf("Verification = SUCCESSFUL\n");
     } else {
         printf("Verification = UNSUCCESSFUL\n");
     }
 
-    /* Get the ending time so we can calculate running time */
-    gettimeofday(&tvEnd, NULL);
-
-    /* Calculate and display the running time */
-    temp = ((tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000)) -
-            (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000)));
-    printf("Time: %.4lf seconds.\n", temp);
+    return verification;
 }
 
 
 int
 main(int argc, char * argv[])
 {
-    char class = argv[1][0];
+    // variaveis para calculo de tempo
+    struct timeval  tvStart;
+    struct timeval  tvEnd;
+    double          totalTime, begin, end;
+    int             verification;
+    // classe do problema
+    char            class;
+
+    /* Get the starting time so we can later calculate running time */
+    gettimeofday(&tvStart, NULL);
+
+    // classe do problema
+    class = argv[1][0];
+
+    printf("---------------------------------\n");
+
     switch (class) {
         case 'W':
             M = 25;
             n = pow(2,M);
-            printf("EP-Serial: Class W\n\n");
+            printf("EP-Serial: Class W\n");
             break;
         case 'A':
             M = 28;
             n = pow(2,M);
-            printf("EP-Serial: Class A\n\n");
+            printf("EP-Serial: Class A\n");
             break;
         case 'B':
             M = 30;
             n = pow(2,M);
-            printf("EP-Serial: Class B\n\n");
+            printf("EP-Serial: Class B\n");
             break;
         case 'C':
             M = 32;
             n = pow(2,M);
-            printf("EP-Serial: Class C\n\n");
+            printf("EP-Serial: Class C\n");
+            break;
+        case 'D':
+            M = 36;
+            n = pow(2,M);
+            printf("EP-Serial: Class D\n");
+            break;
+        case 'E':
+            M = 40;
+            n = pow(2,M);
+            printf("EP-Serial: Class E\n");
             break;
         case 'S':
         default:
@@ -302,16 +317,22 @@ main(int argc, char * argv[])
             printf("EP-Serial: Class S\n\n");
             break;
     }
+    
+    printf("Tamanho do problema: 2^%d = %ld\n", M, (long) n);
 
-    ep();
+    verification = ep();
 
-    printf("\n\n---------------------------------\n\n");
+    /* Get the ending time so we can calculate running time */
+    gettimeofday(&tvEnd, NULL);
 
-/*
-    printf("Class B\n\n");
-    n = pow(2, 30);
-    ep();
-*/
+    /* Calculate and display the running time */
+    begin = (tvStart.tv_sec + ((double) tvStart.tv_usec / 1000000));
+    end = (tvEnd.tv_sec + ((double) tvEnd.tv_usec / 1000000));
+    totalTime = ( end - begin );
+    printf("Time: %.4lf seconds.\n", totalTime);
+
+    // saida: classe;threads;M;N;verificacao;begin;end;tempo
+    printf("SUMMARY: %c;%d;%d;%ld;%d;%.4lf;%.4lf;%.4lf;",class,1,M,(long)n,verification,begin,end,totalTime);
 
     return 0;
 }
