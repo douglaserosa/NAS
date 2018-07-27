@@ -401,7 +401,7 @@ main(int argc, char * argv[])
     NUM_THREADS = atoi(argv[2]);
         
     printf("Tamanho do problema: 2^%d = %ld\n", M, (long) n);
-    printf("Numero de threads: %d\n", NUM_THREADS);
+    printf("Numero de threads: %d/%d\n", NUM_THREADS, omp_get_num_threads());
     
     verification = ep();
 

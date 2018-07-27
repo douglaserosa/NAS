@@ -1,12 +1,12 @@
 CFLAGS	= -Wall -O2
-CC	= arm-linux-gnueabi-gcc
-LIBS	= -lm -static
-APPS	= ep-serial-cross
+CC		= clang
+LIBS	= -lm --sysroot=/toolchains/android/arm/sysroot -pie
+APPS 	= ep-serial
 
 all: $(APPS)
 
-ep-serial-cross: ep-serial.c
-	$(CC) $(CFLAGS) ep-serial.c -o ep-serial-cross $(LIBS)
+ep-serial: ep-serial.c
+	$(CC) $(CFLAGS) ep-serial.c -o ep-serial $(LIBS)
 
 clean:
 	rm -f *.o $(APPS) 
