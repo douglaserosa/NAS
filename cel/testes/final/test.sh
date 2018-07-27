@@ -5,6 +5,9 @@ class=$2
 threads=$3
 chunk=$4
 
+# liga tela brilho 100
+echo 255 > /sys/class/leds/lcd-backlight/brightness
+
 ./battery > batteryLevel
 batteryLevel=$(cat batteryLevel)
 
@@ -19,6 +22,10 @@ while [ $batteryLevel -gt 99 ]; do
     ./battery > batteryLevel
     batteryLevel=$(cat batteryLevel)
 done
+
+# desliga tela
+echo 0 > /sys/class/leds/lcd-backlight/brightness
+sleep 10
 
 mkdir -p results/final/$benchmark
 chmod 777 -R results/final/$benchmark
@@ -36,6 +43,10 @@ do
         echo "Test   :" $test
         echo "Exec   :" $exec
         echo ""
+
+        # desliga tela
+        echo 0 > /sys/class/leds/lcd-backlight/brightness
+
         if [ "$chunk" = "" ]; then
             ./$benchmark $class $threads > results/final/$benchmark/$benchmark-$class-$threads\_$test\_$exec
             ./battery >> results/final/$benchmark/$benchmark-$class-$threads\_$test\_$exec
@@ -46,5 +57,7 @@ do
     done
 done
 
+# liga tela brilho 0
+echo 50 > /sys/class/leds/lcd-backlight/brightness
 
 echo "DONE"
