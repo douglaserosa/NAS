@@ -1,6 +1,6 @@
-CFLAGS	= -Wall -O2
+CFLAGS	= -Wall -O2 -fPIE -fPIC
 CC		= clang++
-LIBS	= -std=c++11 -lm --sysroot=/toolchains/android/arm/sysroot -pie -static-libstdc++
+LIBS	= -std=c++11 -lm -pie -static-libstdc++ --sysroot=/toolchains/arm/api21/clang/sysroot      
 APPS	= ep-cpp
 
 all: $(APPS)
