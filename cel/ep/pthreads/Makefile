@@ -1,6 +1,6 @@
-CFLAGS	= -Wall -O2
+CFLAGS	= -Wall -O2 -fPIE -fPIC
 CC		= clang
-LIBS	= -lm --sysroot=/toolchains/android/arm/sysroot -pie
+LIBS	= -lm -pie --sysroot=/toolchains/arm/api21/clang/sysroot
 APPS 	= ep-pthreads
 
 all: $(APPS)
