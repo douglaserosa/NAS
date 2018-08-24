@@ -17,9 +17,14 @@ do
                 echo ""
                 ./ep-openmp-dynamic $class $threads $chunk > results/chunk-size-test/dynamic/ep-openmp-dynamic-$class-$threads-$chunk--$i
                 ./battery >> results/chunk-size-test/dynamic/ep-openmp-dynamic-$class-$threads-$chunk--$i
+                # desliga tela
+                echo 0 > /sys/class/leds/lcd-backlight/brightness
             done
         done
 	done
 done
+
+# liga tela brilho 0
+echo 50 > /sys/class/leds/lcd-backlight/brightness
 
 echo "DONE"
