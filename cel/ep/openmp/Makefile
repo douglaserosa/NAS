@@ -1,6 +1,6 @@
-CFLAGS	= -Wall -O2
-CC		= clang
-LIBS	= -fopenmp -lm --sysroot=/toolchains/android/arm/sysroot -pie
+CFLAGS	= -Wall -O2 -fPIE -fPIC
+CC		= arm-linux-androideabi-gcc
+LIBS	= -fopenmp -lm -pie --sysroot=/toolchains/arm/api21/clang/sysroot
 APPS	= ep-openmp ep-openmp-static ep-openmp-dynamic ep-openmp-guided
 
 all: $(APPS)

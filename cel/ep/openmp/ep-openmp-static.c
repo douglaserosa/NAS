@@ -252,7 +252,7 @@ int ep(void)
     int             maxXY;
     int             verification;
 
-    #pragma omp parallel private(i,j) shared (threadParams)
+    #pragma omp parallel private(i,j) shared (threadParams) num_threads(NUM_THREADS)
     {
         i = omp_get_thread_num();
         threadParams[i].threadNum = i;
@@ -263,7 +263,7 @@ int ep(void)
         }
     }
 
-    #pragma omp parallel for private(i,j,random_seed,pair,t,multiplier,maxXY) shared (threadParams) schedule(static,CHUNK_SIZE)
+    #pragma omp parallel for private(i,j,random_seed,pair,t,multiplier,maxXY) shared (threadParams) schedule(static,CHUNK_SIZE) num_threads(NUM_THREADS)
     for (i = 0; i < (int) n; ++i)
     {
         j = omp_get_thread_num();
@@ -304,7 +304,7 @@ int ep(void)
         threadParams[j].results[maxXY]++;
     }
     
-    #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
+    // #pragma omp parallel for private(i,j) reduction(+:sumX,sumY,results[:10])
     for (i = 0; i < NUM_THREADS; i++) {
         sumX += threadParams[i].sumX;
         sumY += threadParams[i].sumY;
